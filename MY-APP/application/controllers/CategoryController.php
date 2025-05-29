@@ -14,7 +14,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
  * @property uri $uri
  * @property pagination $pagination
  * @property brandModel $brandModel
- * @property categoryModel $categoryModel
+ * @property CategoryModel $CategoryModel
  * @property upload $upload
  */
 class categoryController extends CI_Controller
@@ -41,7 +41,7 @@ class categoryController extends CI_Controller
 	public function index($page = 1)
 	{
 		$this->config->config['pageTitle'] = 'List Category';
-		$this->load->model('categoryModel');
+		$this->load->model('CategoryModel');
 		// Filter
 		$keyword  = $this->input->get('keyword', true);
 		$status   = $this->input->get('status', true);
@@ -49,7 +49,7 @@ class categoryController extends CI_Controller
 		$perpage  = $perpage > 0 ? $perpage : 10;
 
 		// Tổng số bản ghi
-		$total = $this->categoryModel->countCategory($keyword, $status);
+		$total = $this->CategoryModel->countCategory($keyword, $status);
 
 		$data['links'] = init_pagination(base_url('category/list'), $total, $perpage, 3);
 
@@ -65,7 +65,7 @@ class categoryController extends CI_Controller
 		$start = ($page - 1) * $perpage;
 
 		// Dữ liệu hiển thị
-		$data['category']    = $this->categoryModel->selectCategory($keyword, $status, $perpage, $start);
+		$data['category']    = $this->CategoryModel->selectCategory($keyword, $status, $perpage, $start);
 		$data['links']    = $this->pagination->create_links();
 
 		// Trả filter lại view
@@ -85,10 +85,10 @@ class categoryController extends CI_Controller
 	public function createCategory()
 	{
 		$this->config->config['pageTitle'] = 'Create Category';
-		$this->load->model('categoryModel');
+		$this->load->model('CategoryModel');
 		$data['errors'] = $this->session->flashdata('errors');
 		$data['input'] = $this->session->flashdata('input');
-		$data['category'] = $this->categoryModel->selectCategory();
+		$data['category'] = $this->CategoryModel->selectCategory();
 		$data['title'] = "Thêm mới danh mục";
 		$data['breadcrumb'] = [
 			['label' => 'Dashboard', 'url' => 'dashboard'],
@@ -136,8 +136,8 @@ class categoryController extends CI_Controller
 					'Image' => $category_filename,
 					'Status' => $this->input->post('Status'),
 				];
-				$this->load->model('categoryModel');
-				$this->categoryModel->insertcategory($data);
+				$this->load->model('CategoryModel');
+				$this->CategoryModel->insertcategory($data);
 				$this->session->set_flashdata('success', 'Đã thêm danh mục thành công');
 				redirect(base_url('category/list'));
 			}
@@ -151,8 +151,8 @@ class categoryController extends CI_Controller
 	public function editcategory($id)
 	{
 		$this->config->config['pageTitle'] = 'Edit Category';
-		$this->load->model('categoryModel');
-		$data['category'] = $this->categoryModel->selectcategoryById($id);
+		$this->load->model('CategoryModel');
+		$data['category'] = $this->CategoryModel->selectcategoryById($id);
 		$data['title'] = "Chỉnh sửa danh mục";
 		$data['breadcrumb'] = [
 			['label' => 'Dashboard', 'url' => 'dashboard'],
@@ -186,7 +186,8 @@ class categoryController extends CI_Controller
 
 				if (!$this->upload->do_upload('Image')) {
 					$data['error'] = $this->upload->display_errors();
-					$data['category'] = $this->categoryModel->selectCategory();
+					$this->load->model('CategoryModel');
+					$data['category'] = $this->CategoryModel->selectCategory();
 					$data['template'] = "category/storeCategory";
 					$data['title'] = "Chỉnh sửa danh mục";
 					$this->load->view("admin-layout/admin-layout", $data);
@@ -208,8 +209,8 @@ class categoryController extends CI_Controller
 					'Status' => $this->input->post('Status'),
 				];
 			}
-			$this->load->model('categoryModel');
-			$this->categoryModel->updateCategory($CategoryID, $data);
+			$this->load->model('CategoryModel');
+			$this->CategoryModel->updateCategory($CategoryID, $data);
 			$this->session->set_flashdata('success', 'Đã chỉnh sửa danh mục thành công');
 			redirect(base_url('category/list'));
 		} else {
@@ -240,8 +241,8 @@ class categoryController extends CI_Controller
 		}
 
 
-		$this->load->model('categoryModel');
-		$this->categoryModel->bulkupdateCategory($category_ids, $new_status);
+		$this->load->model('CategoryModel');
+		$this->CategoryModel->bulkupdateCategory($category_ids, $new_status);
 		$this->session->set_flashdata('success', 'Cập nhật trạng thái thành công');
 		redirect(base_url('category/list'));
 	}
