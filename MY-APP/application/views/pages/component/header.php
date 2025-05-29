@@ -4,7 +4,7 @@
 			<div class="row">
 				<div class="col-sm-4">
 					<div class="logo pull-left">
-						<a href="<?php echo base_url('/') ?>"><img style="width: 100px" src="<?php echo base_url('frontend/image/logo.png') ?>" alt="" />PESTICIDE SHOP</a>
+						<a href="<?php echo base_url('/') ?>"><img style="width: 100px" src="<?php echo base_url('frontend/image/logo.png') ?>" alt="" />Noir Essence</a>
 					</div>
 
 				</div>

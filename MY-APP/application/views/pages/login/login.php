@@ -23,13 +23,13 @@
 					<div class="signup-form"><!--sign up form-->
 						<h2>ĐĂNG KÝ TÀI KHOẢN MỚI</h2>
 						<form action="<?php echo base_url('dang-ky')?>" method="POST">
-							<input type="text" name="fullname" placeholder="Họ tên"/>
+							<input type="text" name="fullname" placeholder="Nhập họ tên"/>
 							<?php echo form_error('fullname'); ?>
-							<input type="text" name="phone" placeholder="Số điện thoại"/>
+							<input type="text" name="phone" placeholder="Nhập số điện thoại"/>
 							<?php echo form_error('phone'); ?>
-							<input type="text" name="address" placeholder="Số 120, xã An Hiệp, Châu thành, Đồng Tháp"/>
+							<input type="text" name="address" placeholder="Nhập địa chỉ"/>
 							<?php echo form_error('address'); ?>
-							<input type="email" name="email" placeholder="abc@gamil.com"/>
+							<input type="email" name="email" placeholder="Nhập email"/>
 							<?php echo form_error('email'); ?>
 							<input type="password" name="password" placeholder="Mật khẩu ít nhất 6 ký tự"/>
 							<?php echo form_error('password'); ?>

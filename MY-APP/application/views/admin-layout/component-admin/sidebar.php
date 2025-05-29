@@ -113,7 +113,7 @@ $sidebar_menu = [
                     </span>
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                         <span class="clear">
-                            <span class="block m-t-xs"><strong class="font-bold">Hữu Thuận</strong></span>
+                            <span class="block m-t-xs"><strong class="font-bold">Định Khánh</strong></span>
                             <span class="text-muted text-xs block">Thao tác<b class="caret"></b></span>
                         </span>
                     </a>

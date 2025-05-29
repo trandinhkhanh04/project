@@ -1,13 +1,13 @@
 
-CREATE SCHEMA `pesticide_shopv2` ;
-use pesticide_shopv2;
+-- CREATE SCHEMA `pesticide_shopv2` ;
+-- use pesticide_shopv2;
 
 CREATE TABLE `role` (
   `Role_ID` int NOT NULL AUTO_INCREMENT,
   `Role_name` varchar(255) NOT NULL,
   `Description` varchar(255) NOT NULL,
   PRIMARY KEY (`Role_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 
 LOCK TABLES `role` WRITE;
 /*!40000 ALTER TABLE `role` DISABLE KEYS */;
@@ -33,7 +33,7 @@ CREATE TABLE `users` (
   UNIQUE KEY `Email` (`Email`),
   KEY `Role_ID` (`Role_ID`),
   CONSTRAINT `users_ibfk_1` FOREIGN KEY (`Role_ID`) REFERENCES `role` (`Role_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 INSERT INTO `users` VALUES (1,'hohuuthuan789@gmail.com','$2y$10$B.94veR.J3CO/wtRnJtiiuQDpz8aVXqlOQAsFJV9W8mBGGReGBBLS',2,'Hồ Hữu Thuận','0345492751','102, ấp Tân Hoà, xã An Hiệp, Châu Thành, Đồng Tháp','1','1745313297-cabybara.jpg','JHP055823','2025-04-24 12:10:16'),(2,'admin123@gmail.com','$2y$10$JdKAXUcPCp8FkdkjseAt9.ZbLCLASMqlx06tInHkXrQ3/KCJK4uNi',1,'Hữu Thuận','0345492751','đường Trần Vĩnh Kiết, phường An Bình, quận Ninh Kiều, TP Cần Thơ','1','User-avatar.png','KPM870451','2025-04-22 11:03:32'),(3,'ttpt@gmail.com','$2y$10$sfJxXdk4wR/UE3IKrFL1SumcOGMT/mv8wZLjMBKQNfd1jwLhV9zTC',2,'Nguyễn Tấn Tài','0987654321','đường Trần Vĩnh Kiết, phường An Bình, quận Ninh Kiều, TP Cần Thơ','1','User-avatar.png','RAE579607','2025-04-22 15:29:42');
@@ -52,7 +52,7 @@ CREATE TABLE `brand` (
   `Status` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`BrandID`),
   UNIQUE KEY `Slug` (`Slug`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4;
 LOCK TABLES `brand` WRITE;
 /*!40000 ALTER TABLE `brand` DISABLE KEYS */;
 INSERT INTO `brand` VALUES (1,'Công Ty TNHH Bảo Vệ Thực Vật TDC','Công ty TNHH Bảo Vệ Thực Vật TDC là đơn vị tiên phong trong việc cung cấp phân bón và thuốc bảo vệ thực vật chất lượng cao tại Việt Nam.','1745360580-tdcpng.png','cong-ty-tnhh-bao-ve-thuc-vat-tdc',1),(2,'Công Ty Cổ Phần Phân Bón Cà Mau','Phân bón Cà Mau được biết đến với sản phẩm Urê Cà Mau, đáp ứng nhu cầu phân bón nitơ cho nông nghiệp Việt Nam. Công ty không ngừng cải tiến công nghệ và sản xuất để mang lại những sản phẩm hiệu quả, bền vững và an toàn cho môi trường.','1745360448-phan-bon-ca-maupng.png','cong-ty-co-phan-phan-bon-ca-mau',1),(3,'Công Ty Cổ Phần Phân Bón Việt Nhật (JVF)','Phân Bón Miền Nam đã có hơn 40 năm kinh nghiệm trong lĩnh vực sản xuất và phân phối phân bón. Các sản phẩm của công ty không chỉ cung cấp dinh dưỡng cho cây trồng mà còn giúp cải tạo đất, tăng cường độ phì nhiêu và năng suất nông sản.','1745360540-vietnhatpng.png','cong-ty-co-phan-phan-bon-viet-nhat-jvf',1),(4,'Công Ty Cổ Phần Phân Bón Bình Điền','Phân bón Bình Điền là một thương hiệu uy tín và lâu đời trong ngành nông nghiệp Việt Nam. Công ty này nổi tiếng với sản phẩm phân bón Đầu Trâu, được bà con nông dân ưa chuộng nhờ tính đa dạng và chất lượng cao.','1745360366-phân-bón-bình-điềnpng.png','cong-ty-co-phan-phan-bon-binh-dien',1),(5,'Công Ty TNHH Hóa Nông Lúa Vàng','Lúa Vàng là một trong những thương hiệu nổi tiếng trong ngành thuốc bảo vệ thực vật. Công ty chuyên cung cấp các sản phẩm bảo vệ cây trồng như thuốc trừ sâu, thuốc trừ bệnh, và thuốc diệt cỏ.','1745360686-luavangpng.png','cong-ty-tnhh-hoa-nong-lua-vang',1),(6,'Công Ty Cổ Phần Bảo Vệ Thực Vật Sài Gòn (SPC)','SPC đã có mặt trên thị trường từ năm 1985 và là một trong những đơn vị đi đầu trong lĩnh vực thuốc bảo vệ thực vật tại Việt Nam. Với hệ thống phân phối rộng khắp, SPC mang đến cho bà con nông dân các giải pháp bảo vệ cây trồng toàn diện và đáng tin cậy.','1745360230-SPCpng.png','cong-ty-co-phan-bao-ve-thuc-vat-sai-gon-spc',1),(7,'Công Ty Cổ Phần Nông Dược Hai','Nông Dược Hai là một trong những doanh nghiệp hàng đầu về cung cấp các loại thuốc bảo vệ thực vật. Với kinh nghiệm lâu năm và sự hợp tác với nhiều tập đoàn quốc tế, Nông Dược Hai mang đến những sản phẩm bảo vệ thực vật an toàn và hiệu quả, giúp cây trồng','1745360283-haipng.png','cong-ty-co-phan-nong-duoc-hai',1),(8,'Công Ty Cổ Phần Phân Bón Quốc Tế','Công ty Cổ phần Phân Bón Quốc Tế chuyên sản xuất các loại phân bón hữu cơ, phân vi sinh, và phân bón NPK chất lượng cao. Với cam kết mang lại sự bền vững cho nông nghiệp, các sản phẩm của công ty không chỉ đảm bảo năng suất mà còn giúp cải thiện môi trườn','1745360496-phan-bon-quoc-tepng.png','cong-ty-co-phan-phan-bon-quoc-te',1);
@@ -70,7 +70,7 @@ CREATE TABLE `category` (
   `Status` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`CategoryID`),
   UNIQUE KEY `Slug` (`Slug`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
 LOCK TABLES `category` WRITE;
 /*!40000 ALTER TABLE `category` DISABLE KEYS */;
 INSERT INTO `category` VALUES (1,'Thuốc trừ bệnh trị nấm cây trồng','Danh mục dành cho những sản phẩm trừ bệnh và diệt nấm cây trồng','1745294644lá.png','thuoc-tru-benh-tri-nam-cay-trong',1),(2,'Thuốc diệt ốc','Danh mục cho những sản phẩm diệt ốc','1745294590lá.png','thuoc-diet-oc',1),(3,'Thuốc Sâu Rầy Nhện','Danh mục cho những sản phẩm đặc trị sâu, rầy và nhện','1745294600lá.png','thuoc-sau-ray-nhen',1),(4,'Thuốc diệt chuột','Danh mục dành cho những sản phẩm diệt chuột','1745465102lá.png','thuoc-diet-chuot',1);
@@ -91,7 +91,7 @@ CREATE TABLE `discount` (
   UNIQUE KEY `Coupon_code` (`Coupon_code`),
   CONSTRAINT `discount_chk_1` CHECK ((`Discount_value` >= 0)),
   CONSTRAINT `discount_chk_2` CHECK ((`Min_order_value` >= 0))
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4;
 
 LOCK TABLES `discount` WRITE;
 /*!40000 ALTER TABLE `discount` DISABLE KEYS */;
@@ -124,7 +124,7 @@ CREATE TABLE `product` (
   CONSTRAINT `product_ibfk_2` FOREIGN KEY (`BrandID`) REFERENCES `brand` (`BrandID`),
   CONSTRAINT `product_chk_1` CHECK ((`Selling_price` >= 0)),
   CONSTRAINT `product_chk_2` CHECK (((`Promotion` >= 0) and (`Promotion` <= 100)))
-) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4;
 
 LOCK TABLES `product` WRITE;
 /*!40000 ALTER TABLE `product` DISABLE KEYS */;
@@ -150,7 +150,7 @@ CREATE TABLE `reviews` (
   CONSTRAINT `reviews_ibfk_1` FOREIGN KEY (`ProductID`) REFERENCES `product` (`ProductID`) ON DELETE CASCADE,
   CONSTRAINT `reviews_ibfk_2` FOREIGN KEY (`UserID`) REFERENCES `users` (`UserID`) ON DELETE SET NULL,
   CONSTRAINT `reviews_chk_1` CHECK ((`rating` between 1 and 5))
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 LOCK TABLES `reviews` WRITE;
 /*!40000 ALTER TABLE `reviews` DISABLE KEYS */;
 INSERT INTO `reviews` VALUES (1,30,2,4,'Sản phẩm rất tốt','Cảm ơn quý khách','2025-04-24 14:41:10','2025-05-02 15:00:43',1);
@@ -169,7 +169,7 @@ CREATE TABLE `suppliers` (
   `Status` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`SupplierID`),
   UNIQUE KEY `Email` (`Email`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
 LOCK TABLES `suppliers` WRITE;
 /*!40000 ALTER TABLE `suppliers` DISABLE KEYS */;
 INSERT INTO `suppliers` VALUES (1,'Công Ty TNHH Tây Trúc Xanh\n','Hồ Hữu Thuận',' 0913344479','36 Sunrise C, Đường Số 1, Khu Đô Thị The Manor CentralPark, P. Đại Kim, Q. Hoàng Mai, Hà Nội','taytrucxanh@gmail.com',0),(2,'Công Ty TNHH Đầu Tư Phát Triển Nông Nghiệp Bốn Mùa KBM','Nguyễn Tấn Tài','0988885089','Tầng 2, Tòa Nhà Số 53 Lê Lăng, Phường Phú Thọ Hòa, Quận Tân Phú, TP. Hồ Chí Minh (TPHCM)','bonmua.cskh@gmail.com',0),(3,'Công Ty TNHH Anh Dẩu - Tiền Giang','Trịnh Trần Phương Lan','0915633224','Ấp Mỹ Trung, X. Hậu Mỹ Bắc B, H. Cái Bè, Tiền Giang','congtyanhdautg@gmail.com',0),(4,'Sygenta','Trịnh Trần Phương Lan','0987654321','Ấp Mỹ Trung, X. Hậu Mỹ Bắc B, H. Cái Bè, Tiền Giang','hohuuthuan789@gmail.com',0);
@@ -193,7 +193,7 @@ CREATE TABLE `warehouse_receipt` (
   KEY `idx_created_at` (`created_at`),
   KEY `idx_supplier_id` (`supplier_id`),
   CONSTRAINT `warehouse_receipt_fk_1` FOREIGN KEY (`supplier_id`) REFERENCES `suppliers` (`SupplierID`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
 LOCK TABLES `warehouse_receipt` WRITE;
 /*!40000 ALTER TABLE `warehouse_receipt` DISABLE KEYS */;
 INSERT INTO `warehouse_receipt` VALUES (1,1,'2025-04-21 17:00:00','Hồ Hữu Thuận','Đơn vị vận chuyển','đường Trần Vĩnh Kiết, phường An Bình, quận Ninh Kiều, TP Cần Thơ','Phiếu giao nhận số 1','Nhập nội bộ từ kho 1',1,82500000),(2,2147483647,'2025-04-23 17:00:00','Hồ Hữu Thuận','Đơn vị vận chuyển công ty cây trúc','đường Trần Vĩnh Kiết, phường An Bình, quận Ninh Kiều, TP Cần Thơ','Phiếu giao nhận số 2','Nhập nội bộ từ kho trung tâm',1,558900000);
@@ -221,7 +221,7 @@ CREATE TABLE `warehouse_receipt_items` (
   CONSTRAINT `warehouse_receipt_items_fk_2` FOREIGN KEY (`ProductID`) REFERENCES `product` (`ProductID`) ON DELETE CASCADE,
   CONSTRAINT `warehouse_receipt_items_chk_1` CHECK ((`Quantity_doc` >= 0)),
   CONSTRAINT `warehouse_receipt_items_chk_2` CHECK ((`Quantity_actual` >= 0))
-) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8mb4;
 LOCK TABLES `warehouse_receipt_items` WRITE;
 /*!40000 ALTER TABLE `warehouse_receipt_items` DISABLE KEYS */;
 INSERT INTO `warehouse_receipt_items` VALUES (1,1,1,'Selecron500EC','Chai',20000,'2026-02-22 00:00:00',1000,1000,''),(2,1,2,'Pesieu500SC','Hộp',20000,'2026-02-22 00:00:00',1000,1000,''),(3,1,3,'NEEMNANO','Chai',20000,'2026-02-22 00:00:00',500,500,''),(4,1,14,'RAT-K','Túi',10000,'2026-12-31 00:00:00',500,500,''),(5,1,22,'CLEAR700wp','Túi',25000,'2026-11-29 00:00:00',700,700,''),(6,1,28,'DIOTO','Chai',20000,'2026-12-31 00:00:00',500,500,''),(7,2,1,'Selecron500EC','Chai',20000,'2026-12-24 00:00:00',100,100,''),(8,2,2,'Pesieu500SC','Hộp',15000,'2026-12-24 00:00:00',100,100,''),(9,2,3,'NEEMNANO','Chai',20000,'2026-12-24 00:00:00',1000,1000,''),(10,2,4,'Vidifen40EC','Chai',20000,'2026-12-24 00:00:00',1000,1000,''),(11,2,5,'Virtako40wg','Túi',18000,'2026-04-24 00:00:00',1000,1000,''),(12,2,6,'DupontPrevathon5SC','Hộp chứa 6 túi',120000,'2026-04-24 00:00:00',1000,1000,''),(13,2,7,'Danitol50EC','Chai',40000,'2026-04-24 00:00:00',100,100,''),(14,2,8,'Reasgant3.6EC','Chai',40000,'2026-04-24 00:00:00',1000,1000,''),(15,2,9,'Dantotsu50WG','Túi',20000,'2026-04-24 00:00:00',1000,1000,''),(16,2,10,'Storm','Túi',16000,'2026-04-24 00:00:00',100,100,''),(17,2,11,'Killrat','Hộp',15000,'2026-04-24 00:00:00',1000,1000,''),(18,2,12,'Kokubo','Hộp',18000,'2026-04-24 00:00:00',1000,1000,''),(19,2,13,'Forwarat','Hộp',18000,'2026-04-24 00:00:00',1000,1000,''),(20,2,14,'RAT-K','Túi',14000,'2026-04-24 00:00:00',1000,1000,''),(21,2,15,'Racumin0.75Tp20G','Túi',20000,'2026-04-24 00:00:00',100,100,''),(22,2,16,'Cat0.25WP','Túi',15000,'2026-04-24 00:00:00',1000,1000,''),(23,2,17,'ARSRATKILLER','Hộp',20000,'2026-04-24 00:00:00',1000,1000,''),(24,2,18,'Dethmor','Hộp',20000,'2026-04-24 00:00:00',1000,1000,''),(25,2,19,'Broma','Túi',16000,'2026-04-24 00:00:00',1000,1000,''),(26,2,20,'Helix®500WP','Túi',25000,'2026-04-24 00:00:00',1000,1000,''),(27,2,21,'VT-DAX700WP','Túi',15000,'2026-04-24 00:00:00',1000,1000,''),(28,2,22,'CLEAR700wp','Túi',30000,'2026-04-24 00:00:00',1000,1000,''),(29,2,23,'SACHOCTSC850WP','Túi',20000,'2026-04-24 00:00:00',1000,1000,''),(30,2,24,'Sun-fasti700WP','Túi',25000,'2026-04-24 00:00:00',1000,1000,''),(31,2,25,'RedDuck12BR','Túi',24000,'2026-04-24 00:00:00',1000,1000,''),(32,2,26,'BlackCarp700wp','Hộp',22000,'2026-04-24 00:00:00',100,100,''),(33,2,27,'ANTIOC777WP','Hộp',22000,'2026-04-24 00:00:00',100,100,''),(34,2,28,'DIOTO','Chai',22000,'2026-04-24 00:00:00',100,100,''),(35,2,29,'BOLIS12GB','Túi',23000,'2026-04-24 00:00:00',100,100,''),(36,2,30,'Anvil5SC','Chai',30000,'2026-04-24 00:00:00',100,100,''),(37,2,31,'Isacop65.2WG','Túi',30000,'2026-04-24 00:00:00',100,100,''),(38,2,32,'Antracol70WP','Túi',30000,'2026-04-24 00:00:00',100,100,''),(39,2,33,'Vimonyl72WP','Túi',20000,'2026-04-24 00:00:00',100,100,''),(40,2,34,'Filia525SE','Chai',18000,'2026-04-24 00:00:00',100,100,''),(41,2,35,'Score250EC','Chai',18000,'2026-04-24 00:00:00',100,100,''),(42,2,36,'MANOZEB80WP','Túi',30000,'2026-04-24 00:00:00',100,100,''),(43,2,37,'Totan200 WP','Túi',20000,'2026-04-24 00:00:00',100,100,''),(44,2,38,'CabrioTop600WG','Chai',25000,'2026-04-24 00:00:00',100,100,''),(45,2,39,'Vitrobin320SC','Chai',38000,'2026-04-24 00:00:00',100,100,'');
@@ -238,7 +238,7 @@ UNLOCK TABLES;
 --   PRIMARY KEY (`id`),
 --   KEY `receipt_id` (`receipt_id`),
 --   CONSTRAINT `warehouse_receipt_signatures_fk_1` FOREIGN KEY (`receipt_id`) REFERENCES `warehouse_receipt` (`id`) ON DELETE CASCADE
--- ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+-- ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
 
@@ -262,7 +262,7 @@ CREATE TABLE `batches` (
   CONSTRAINT `batches_ibfk_3` FOREIGN KEY (`Warehouse_Receipt_ID`) REFERENCES `warehouse_receipt` (`id`),
   CONSTRAINT `batches_chk_1` CHECK ((`Quantity` >= 0)),
   CONSTRAINT `batches_chk_2` CHECK ((`Import_price` >= 0))
-) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8mb4;
 
 LOCK TABLES `batches` WRITE;
 /*!40000 ALTER TABLE `batches` DISABLE KEYS */;
@@ -311,7 +311,7 @@ CREATE TABLE `orders` (
   CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`UserID`) REFERENCES `users` (`UserID`),
   CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`DiscountID`) REFERENCES `discount` (`DiscountID`),
   CONSTRAINT `orders_chk_1` CHECK ((`TotalAmount` >= 0))
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4;
 LOCK TABLES `orders` WRITE;
 /*!40000 ALTER TABLE `orders` DISABLE KEYS */;
 INSERT INTO `orders` VALUES (34,'QNF115218',4,1,2,700000,NULL,'2025-05-04 03:00:02','2025-05-04 03:00:44','2025-05-04 03:00:44',35);
@@ -338,7 +338,7 @@ CREATE TABLE `order_detail` (
   CONSTRAINT `order_detail_chk_1` CHECK ((`Quantity` >= 0)),
   CONSTRAINT `order_detail_chk_2` CHECK ((`Selling_price` >= 0)),
   CONSTRAINT `order_detail_chk_3` CHECK ((`Subtotal` >= 0))
-) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8mb4;
 
 LOCK TABLES `order_detail` WRITE;
 /*!40000 ALTER TABLE `order_detail` DISABLE KEYS */;
@@ -359,7 +359,7 @@ CREATE TABLE `order_batches` (
   KEY `batch_id` (`batch_id`),
   CONSTRAINT `order_batches_ibfk_1` FOREIGN KEY (`order_detail_id`) REFERENCES `order_detail` (`id`),
   CONSTRAINT `order_batches_ibfk_2` FOREIGN KEY (`batch_id`) REFERENCES `batches` (`Batch_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=60 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=60 DEFAULT CHARSET=utf8mb4;
 
 LOCK TABLES `order_batches` WRITE;
 /*!40000 ALTER TABLE `order_batches` DISABLE KEYS */;
@@ -388,7 +388,7 @@ CREATE TABLE `vnpay` (
   KEY `shipping_method_vnpay_ordercode` (`vnp_TxnRef`),
   CONSTRAINT `shipping_method_vnpay` FOREIGN KEY (`ShippingID`) REFERENCES `shipping` (`id`),
   CONSTRAINT `shipping_method_vnpay_ordercode` FOREIGN KEY (`vnp_TxnRef`) REFERENCES `orders` (`Order_Code`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4;
 LOCK TABLES `vnpay` WRITE;
 /*!40000 ALTER TABLE `vnpay` DISABLE KEYS */;
 /*!40000 ALTER TABLE `vnpay` ENABLE KEYS */;

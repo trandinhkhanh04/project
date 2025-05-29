@@ -179,14 +179,14 @@ class IndexController extends CI_Controller
 
 		$config['protocol'] = 'smtp';
 		$config['smtp_host'] = 'ssl://smtp.gmail.com';
-		$config['smtp_user'] = 'hohuuthuan789@gmail.com';
-		$config['smtp_pass'] = 'xvinihubnvdnmloz';
+		$config['smtp_user'] = 'tdkhanh041103@gmail.com';
+		$config['smtp_pass'] = 'ppbqifdsezcubsjh';
 		$config['smtp_port'] = '465';
 		$config['charset'] = 'utf-8';
 		$config['wordwrap'] = TRUE;
 		$this->email->initialize($config);
 		$this->email->set_newline("\r\n");
-		$from_mail = 'hohuuthuan789@gmail.com';
+		$from_mail = 'tdkhanh041103@gmail.com';
 
 		$this->email->from($from_mail, 'Trang web abc.com');
 		$this->email->to($to_mail);

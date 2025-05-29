@@ -72,14 +72,14 @@ class CheckoutController extends CI_Controller
 
         $config['protocol'] = 'smtp';
         $config['smtp_host'] = 'ssl://smtp.gmail.com';
-        $config['smtp_user'] = 'hohuuthuan789@gmail.com';
-        $config['smtp_pass'] = 'xvinihubnvdnmloz';
+        $config['smtp_user'] = 'tdkhanh041103@gmail.com';
+        $config['smtp_pass'] = 'ppbqifdsezcubsjh';
         $config['smtp_port'] = '465';
         $config['charset'] = 'utf-8';
         $config['wordwrap'] = TRUE;
         $this->email->initialize($config);
         $this->email->set_newline("\r\n");
-        $from_mail = 'hohuuthuan789@gmail.com';
+        $from_mail = 'tdkhanh041103@gmail.com';
 
         $this->email->from($from_mail, 'Trang web abc.com');
         $this->email->to($to_mail);
@@ -155,6 +155,11 @@ class CheckoutController extends CI_Controller
         }
 
         if ($checkout_method === 'VNPAY') {
+            
+            // echo 123;
+            // die();
+
+
             $this->redirect_to_vnpay($order_code, $total);
         }
 
@@ -269,10 +274,15 @@ class CheckoutController extends CI_Controller
 
     private function redirect_to_vnpay($order_code, $total)
     {
+
+
+
         $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
+
+ 
         $vnp_Returnurl = base_url('thank-you-for-order');
-        $vnp_TmnCode = "F72UMWTL";
-        $vnp_HashSecret = "696U98UTDBDDD09ZN1T0GAVR3KC4EVMU";
+        $vnp_TmnCode = "MMT0S8W9";
+        $vnp_HashSecret = "RHVWQAV1LJ9OU98HCQIYMT7QEOHMD892";
 
         $vnp_TxnRef = $order_code;
         $vnp_OrderInfo = 'Thanh toan don hang: ' . $order_code;
@@ -315,13 +325,18 @@ class CheckoutController extends CI_Controller
         $vnpSecureHash = hash_hmac('sha512', $hashdataStr, $vnp_HashSecret);
         $vnp_Url .= '?' . $queryStr . '&vnp_SecureHash=' . $vnpSecureHash;
 
+
         redirect($vnp_Url);
+
+
     }
 
 
     public function thank_you_for_order()
     {
-        if (isset($_GET['vnp_Amount']) && $_GET['vnp_ResponseCode'] == 00) {
+      
+
+        if (isset($_GET['vnp_Amount']) && $_GET['vnp_ResponseCode'] == '00') {
 
 
             $user_id = $this->getUserOnSession();

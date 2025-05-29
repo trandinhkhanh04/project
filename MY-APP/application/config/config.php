@@ -35,7 +35,7 @@ $config['base_url'] = 'http://localhost:8000/';
 | variable so that it is blank.
 |
 */
-$config['pageTitle'] = 'PESTICIDE SHOP';
+$config['pageTitle'] = 'Noir Essence';
 
 /*
 |--------------------------------------------------------------------------
