@@ -270,66 +270,133 @@ class CheckoutController extends CI_Controller
         $this->cart->destroy();
     }
 
-
-
     private function redirect_to_vnpay($order_code, $total)
-    {
+{
+    // Cài đặt múi giờ chuẩn VN
+    date_default_timezone_set('Asia/Ho_Chi_Minh');
 
+    // VNPay URL
+    $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
+    $vnp_Returnurl = base_url('thank-you-for-order');
 
+    // Thông tin kết nối của bạn
+    $vnp_TmnCode = "MMT0S8W9"; // Mã merchant
+    $vnp_HashSecret = "RHVWQAV1LJ9OU98HCQIYMT7QEOHMD892"; // Chuỗi ký bí mật
 
-        $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
+    // Dữ liệu đơn hàng
+    $vnp_TxnRef = $order_code;
+    $vnp_OrderInfo = 'Thanh toan don hang: ' . $order_code;
+    $vnp_OrderType = 'billpayment';
+    $vnp_Amount = intval($total) * 100; // Đảm bảo là số nguyên
+    $vnp_Locale = 'vn';
+    $vnp_BankCode = 'NCB';
 
- 
-        $vnp_Returnurl = base_url('thank-you-for-order');
-        $vnp_TmnCode = "MMT0S8W9";
-        $vnp_HashSecret = "RHVWQAV1LJ9OU98HCQIYMT7QEOHMD892";
+    // Đảm bảo IP là IPv4 hợp lệ
+    $vnp_IpAddr = ($_SERVER['REMOTE_ADDR'] === '::1') ? '127.0.0.1' : $_SERVER['REMOTE_ADDR'];
 
-        $vnp_TxnRef = $order_code;
-        $vnp_OrderInfo = 'Thanh toan don hang: ' . $order_code;
-        $vnp_OrderType = 'billpayment';
-        $vnp_Amount = $total * 100;
-        $vnp_Locale = 'vn';
-        $vnp_BankCode = 'NCB';
-        $vnp_IpAddr = $_SERVER['REMOTE_ADDR'];
+    // Tạo mảng dữ liệu truyền đi
+    $inputData = array(
+        "vnp_Version" => "2.1.0",
+        "vnp_TmnCode" => $vnp_TmnCode,
+        "vnp_Amount" => $vnp_Amount,
+        "vnp_Command" => "pay",
+        "vnp_CreateDate" => date('YmdHis'), 
+        "vnp_CurrCode" => "VND",
+        "vnp_IpAddr" => $vnp_IpAddr,
+        "vnp_Locale" => $vnp_Locale,
+        "vnp_OrderInfo" => $vnp_OrderInfo,
+        "vnp_OrderType" => $vnp_OrderType,
+        "vnp_ReturnUrl" => $vnp_Returnurl,
+        "vnp_TxnRef" => $vnp_TxnRef,
+        "vnp_BankCode" => $vnp_BankCode
+    );
 
-        $inputData = array(
-            "vnp_Version" => "2.1.0",
-            "vnp_TmnCode" => $vnp_TmnCode,
-            "vnp_Amount" => $vnp_Amount,
-            "vnp_Command" => "pay",
-            "vnp_CreateDate" => date('YmdHis'),
-            "vnp_CurrCode" => "VND",
-            "vnp_IpAddr" => $vnp_IpAddr,
-            "vnp_Locale" => $vnp_Locale,
-            "vnp_OrderInfo" => $vnp_OrderInfo,
-            "vnp_OrderType" => $vnp_OrderType,
-            "vnp_ReturnUrl" => $vnp_Returnurl,
-            "vnp_TxnRef" => $vnp_TxnRef,
-            "vnp_BankCode" => $vnp_BankCode
-        );
+    // Sắp xếp và ký dữ liệu
+    ksort($inputData);
+    $query = [];
+    $hashdata = [];
 
-        // Sắp xếp key tăng dần
-        ksort($inputData);
-
-        $query = [];
-        $hashdata = [];
-
-        foreach ($inputData as $key => $value) {
-            $hashdata[] = urlencode($key) . "=" . urlencode($value);
-            $query[] = urlencode($key) . "=" . urlencode($value);
-        }
-
-        $hashdataStr = implode('&', $hashdata);
-        $queryStr = implode('&', $query);
-
-        $vnpSecureHash = hash_hmac('sha512', $hashdataStr, $vnp_HashSecret);
-        $vnp_Url .= '?' . $queryStr . '&vnp_SecureHash=' . $vnpSecureHash;
-
-
-        redirect($vnp_Url);
-
-
+    foreach ($inputData as $key => $value) {
+        $hashdata[] = urlencode($key) . "=" . urlencode($value);
+        $query[] = urlencode($key) . "=" . urlencode($value);
     }
+
+    $hashdataStr = implode('&', $hashdata);
+    $queryStr = implode('&', $query);
+
+    $vnpSecureHash = hash_hmac('sha512', $hashdataStr, $vnp_HashSecret);
+    $vnp_Url .= '?' . $queryStr . '&vnp_SecureHash=' . $vnpSecureHash;
+
+    // Chuyển hướng ngay
+    redirect($vnp_Url);
+}
+
+
+    // private function redirect_to_vnpay($order_code, $total)
+    // {
+
+    //     // echo $order_code;
+    //     // echo $total;
+    //     // die();
+
+    //     $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
+    //     // $vnp_Url = "thank-you-for-order";
+        
+ 
+    //     $vnp_Returnurl = base_url('thank-you-for-order');
+    //     $vnp_TmnCode = "MMT0S8W9";
+    //     $vnp_HashSecret = "RHVWQAV1LJ9OU98HCQIYMT7QEOHMD892";
+
+    //     $vnp_TxnRef = $order_code;
+    //     $vnp_OrderInfo = 'Thanh toan don hang: ' . $order_code;
+    //     $vnp_OrderType = 'billpayment';
+    //     $vnp_Amount = $total * 100;
+    //     $vnp_Locale = 'vn';
+    //     $vnp_BankCode = 'NCB';
+    //     // $vnp_IpAddr = $_SERVER['REMOTE_ADDR'];
+    //     $vnp_IpAddr = ($_SERVER['REMOTE_ADDR'] === '::1') ? '127.0.0.1' : $_SERVER['REMOTE_ADDR'];
+
+
+    //     $inputData = array(
+    //         "vnp_Version" => "2.1.0",
+    //         "vnp_TmnCode" => $vnp_TmnCode,
+    //         "vnp_Amount" => $vnp_Amount,
+    //         "vnp_Command" => "pay",
+    //         "vnp_CreateDate" => date('YmdHis'),
+    //         "vnp_CurrCode" => "VND",
+    //         "vnp_IpAddr" => $vnp_IpAddr,
+    //         "vnp_Locale" => $vnp_Locale,
+    //         "vnp_OrderInfo" => $vnp_OrderInfo,
+    //         "vnp_OrderType" => $vnp_OrderType,
+    //         "vnp_ReturnUrl" => $vnp_Returnurl,
+    //         "vnp_TxnRef" => $vnp_TxnRef,
+    //         "vnp_BankCode" => $vnp_BankCode
+    //     );
+
+    //     // Sắp xếp key tăng dần
+    //     ksort($inputData);
+
+    //     $query = [];
+    //     $hashdata = [];
+
+    //     foreach ($inputData as $key => $value) {
+    //         $hashdata[] = urlencode($key) . "=" . urlencode($value);
+    //         $query[] = urlencode($key) . "=" . urlencode($value);
+    //     }
+
+    //     $hashdataStr = implode('&', $hashdata);
+    //     $queryStr = implode('&', $query);
+
+    //     $vnpSecureHash = hash_hmac('sha512', $hashdataStr, $vnp_HashSecret);
+    //     $vnp_Url .= '?' . $queryStr . '&vnp_SecureHash=' . $vnpSecureHash;
+
+
+    //     // echo $vnp_Url; die();
+
+    //     redirect($vnp_Url);
+
+
+    // }
 
 
     public function thank_you_for_order()

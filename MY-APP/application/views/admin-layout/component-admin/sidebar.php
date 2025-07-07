@@ -123,7 +123,7 @@ $sidebar_menu = [
                         <li><a href="<?php echo base_url('logout_admin'); ?>">Logout</a></li>
                     </ul>
                 </div>
-                <div class="logo-element">IN+</div>
+                <div class="logo-element">Home</div>
             </li>
 
             <?php foreach ($sidebar_menu as $key => $menu): ?>

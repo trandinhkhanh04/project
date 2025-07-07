@@ -1,3 +1,35 @@
+<style>
+        .search-bar {
+            display: flex;
+            align-items: center;
+            border: 2px solid rgb(145, 156, 165);  /* Đường viền xanh dương */
+            border-radius: 20px;         /* Bo góc tròn */
+            overflow: hidden;
+            width: 100%;
+            max-width: 400px;            /* Giới hạn chiều rộng */
+        }
+
+        .search-input {
+            border: none;
+            padding: 20px 15px;
+            outline: none;
+            flex: 1;                    /* Input chiếm toàn bộ không gian còn lại */
+        }
+
+        .search-btn {
+            background-color: rgb(145, 156, 165);  /* Màu xanh dương */
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 0;           /* Loại bỏ bo góc của nút */
+        }
+
+        .search-btn:hover {
+            background-color:rgb(64, 100, 123);  /* Màu khi hover */
+        }
+    </style>
+
 <header id="header">
 	<div class="header-middle"><!--header-middle-->
 		<div class="container">
@@ -96,19 +128,29 @@
 								</li>
 								<li><a href="404.html">404</a></li>
 								<li><a href="contact-us.html">Contact</a></li> -->
-							<li><a href="<?php echo base_url('predict') ?>">Chẩn đoán bệnh</a></li>
+							<!-- <li><a href="<?php echo base_url('predict') ?>">Chẩn đoán bệnh</a></li> -->
 							<li><a href="<?php echo base_url('product-on-sale') ?>">Sản phẩm đang được giảm giá</a></li>
 						</ul>
 					</div>
 				</div>
 				<div class="col-sm-5">
-					<div class="search_box pull-right">
+
+					<!-- <div class="search_box pull-right">
 						<form action="<?php echo base_url('search-product') ?>" method="GET">
 							<input type="text" name="keyword" placeholder="Tên sản phẩm..." id="searchKeyword" value="<?php echo $this->input->get('keyword'); ?>" />
 							<input type="submit" class="btn btn-default" value="Tìm kiếm" />
 						</form>
+					</div> -->
+					<form action="<?php echo base_url('search-product') ?>" method="GET">
+						<div class="search-bar">
+            				<input type="text" name="keyword" id="searchKeyword" class="form-control search-input" placeholder="Tìm kiếm...">
+            				<button type="submit" value="Search" class="btn search-btn">
+                			<i class="fa fa-search"></i>
+           				 </button>
+        			</div>
+					</form>
 
-					</div>
+
 				</div>
 			</div>
 		</div>
