@@ -13,11 +13,11 @@
             <tr>
                 <th><input type="checkbox" id="check_all"></th>
                 <th scope="text-center">#</th>
-                <th scope="text-center">Image</th>
-                <th scope="text-center">Name</th>
-                <th scope="text-center">Description</th>
-                <th scope="text-center">Status</th>
-                <th scope="text-center">Manage</th>
+                <th scope="text-center">Hình ảnh</th>
+                <th scope="text-center">Tên sản phẩm</th>
+                <th scope="text-center">Mô tả</th>
+                <th scope="text-center">Trạng thái</th>
+                <th scope="text-center">Thao tác</th>
             </tr>
         </thead>
 

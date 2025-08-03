@@ -117,7 +117,38 @@
                                     </div>
                                 </div>
                                 <hr>
+
+
+                                
                             <?php endforeach; ?>
+
+                            <!-- Gán shipper cho đơn hàng -->
+<?php if (!empty($shippers)): ?>
+    <form method="post" action="<?= base_url('OrderConTroller/assign_shipper') ?>">
+
+        <input type="hidden" name="Order_Code" value="<?= $order_details[0]->Order_Code ?>">
+
+        <div class="form-group">
+            <label for="ShipperID">Chọn shipper phụ trách:</label>
+            <!-- <p>Shipper hiện tại: <?= $order->ShipperID ?? 'chưa gán' ?></p> -->
+            <select name="ShipperID" id="ShipperID" class="form-control">
+                <option value="">-- Chọn shipper --</option>
+                <?php foreach ($shippers as $shipper): ?>
+                    <option value="<?= $shipper->ShipperID ?>"
+                        <?= isset($order->ShipperID) && $order->ShipperID == $shipper->ShipperID ? 'selected' : '' ?>>
+                        <?= $shipper->Name ?> (<?= $shipper->Phone ?>)
+                    </option>
+
+                <?php endforeach; ?>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-sm">Cập nhật shipper</button>
+    </form>
+<?php else: ?>
+    <p><em>Chưa có shipper nào được tạo.</em></p>
+<?php endif; ?>
+
                         </div>
 
                         <div class="col-lg-4">
@@ -143,7 +174,7 @@
                                     </tbody>
                                 <?php endforeach; ?>
                             </table>
-                            <?php if (!empty($order_details[0]->DiscountID) && !empty($order_details[0]->Discount_value)): ?>
+                            <!-- <?php if (!empty($order_details[0]->DiscountID) && !empty($order_details[0]->Discount_value)): ?>
                                 <table class="table table-bordered table-hover">
                                     <thead>
                                         <tr>
@@ -160,7 +191,36 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                            <?php endif; ?>
+                            <?php endif; ?> -->
+
+                            <?php if (!empty($order_details[0]->DiscountID) && !empty($order_details[0]->Discount_value)): ?>
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Số tiền đã được giảm</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <h2 style="font-weight: 600;" class="text-info">
+                        <?php
+                        $discountValue = $order_details[0]->Discount_value;
+                        $discountType = $order_details[0]->Discount_type; // Ví dụ: 'percent' hoặc 'amount'
+
+                        if ($discountType === 'Percentage') {
+                            echo $discountValue . ' %';
+                        } else {
+                            echo number_format($discountValue, 0, ',', '.') . ' VNĐ';
+                        }
+                        ?>
+                    </h2>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+<?php endif; ?>
+
 
                             <table class="table table-bordered table-hover">
                                 <?php foreach ($order_totals as $Order_Code => $total): ?>

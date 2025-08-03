@@ -89,10 +89,6 @@ class productController extends CI_Controller
 		$this->load->view("admin-layout/admin-layout", $data);
 	}
 
-
-
-
-
 	public function createProduct()
 	{
 		$this->config->config['pageTitle'] = 'Create Product';
@@ -127,6 +123,9 @@ class productController extends CI_Controller
 		$this->form_validation->set_rules('Selling_price', 'Price', 'trim|required', ['required' => 'Bạn cần điền giá bán']);
 		$this->form_validation->set_rules('Product_uses', 'Product_uses', 'trim|required', ['required' => 'Bạn cần điền công dụng sản phẩm']);
 		$this->form_validation->set_rules('Unit', 'Unit', 'trim|required', ['required' => 'Bạn cần điền đơn vị tính']);
+
+		$this->form_validation->set_rules('set', 'Giới tính', 'required', ['required' => 'Bạn cần chọn giới tính cho sản phẩm']);
+
 		// $this->form_validation->set_rules('Image', 'Hình ảnh', 'required', ['required' => 'Bạn cần chọn %s']);
 
 		if ($this->form_validation->run()) {
@@ -160,6 +159,9 @@ class productController extends CI_Controller
 					'Status' => $this->input->post('Status'),
 					'BrandID' => $this->input->post('BrandID'),
 					'CategoryID' => $this->input->post('CategoryID'),
+
+					'set' => $this->input->post('set'),
+
 				];
 				// echo '<pre>';
 				// print_r($data);
@@ -210,6 +212,9 @@ class productController extends CI_Controller
 		$this->form_validation->set_rules('Product_uses', 'Product_uses', 'trim|required', ['required' => 'Bạn cần diền %s']);
 		$this->form_validation->set_rules('Unit', 'Unit', 'trim|required', ['required' => 'Bạn cần điền %s']);
 
+		$this->form_validation->set_rules('set', 'Giới tính', 'required', ['required' => 'Bạn cần chọn %s']);
+
+
 
 		if ($this->form_validation->run()) {
 
@@ -243,6 +248,9 @@ class productController extends CI_Controller
 						'Status' => $this->input->post('Status'),
 						'BrandID' => $this->input->post('BrandID'),
 						'CategoryID' => $this->input->post('CategoryID'),
+
+						'set' => $this->input->post('set'),
+
 					];
 				}
 			} else {
@@ -257,6 +265,9 @@ class productController extends CI_Controller
 					'Status' => $this->input->post('Status'),
 					'BrandID' => $this->input->post('BrandID'),
 					'CategoryID' => $this->input->post('CategoryID'),
+
+					'set' => $this->input->post('set'),
+
 				];
 			}
 			$this->load->model('productModel');

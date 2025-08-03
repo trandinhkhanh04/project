@@ -4,7 +4,7 @@
     <?php } elseif ($this->session->flashdata('error')) { ?>
         <div class="alert alert-danger"><?php echo $this->session->flashdata('error') ?></div>
     <?php } ?>
-    <h1 style="color: #FE980F">Nhập vào mã xác thực</h1>
+    <h1 style="color: brown;">Nhập vào mã xác thực</h1>
     <form action="<?php echo base_url('change-password-verify-token'); ?>" method="POST">
         <input type="hidden" name="email" value="<?php echo $email; ?>">
         <input type="hidden" name="phone" value="<?php echo $phone; ?>">
@@ -12,6 +12,6 @@
             <label for="token">Mã xác thực, lưu ý chỉ nhập mã xác thực 1 lần</label>
             <input type="text" class="form-control" id="token" name="token" placeholder="Mã xác thực gồm 9 ký tự" required>
         </div>
-        <button style="margin-bottom: 100px" type="submit" class="btn btn-primary">Xác thực</button>
+        <button style="margin-bottom: 100px" type="submit" class="btn btn-success">Xác thực</button>
     </form>
 </div>

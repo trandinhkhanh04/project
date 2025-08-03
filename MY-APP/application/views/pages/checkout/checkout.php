@@ -12,13 +12,13 @@
 			?>
 				<table class="table table-condensed">
 					<thead>
-						<tr class="cart_menu">
-							<td scope="col" class="description">Image</td>
-							<td scope="col" class="image">Item</td>
-							<td scope="col" class="price">Price</td>
-							<td scope="col" class="quantity">Quantity</td>
-							<td scope="col" class="in_stock">In Stock</td>
-							<td scope="col" class="total">Total</td>
+						<tr class="cart_menu" style="background-color: #808080;">
+							<td scope="col" class="description">Hình ảnh</td>
+							<td scope="col" class="image">Sản phẩm</td>
+							<td scope="col" class="price">Đơn giá</td>
+							<td scope="col" class="quantity">Số lượng</td>
+							<td scope="col" class="in_stock">Tồn kho</td>
+							<td scope="col" class="total">Thành tiền</td>
 							<td scope="col"></td>
 						</tr>
 					</thead>
@@ -35,7 +35,7 @@
 									<img src="<?php echo base_url('uploads/product/' . $items['options']['image']) ?>"
 										width="150" height="150" alt="<?php echo $items['name'] ?>">
 								</td>
-								<td style="width: 200px;" class="cart_description">
+								<td  class="cart_description">
 									<h4>
 										<p><?php echo $items['name'] ?></p>
 									</h4>
@@ -43,7 +43,7 @@
 								<td class="cart_price">
 									<p><?php echo number_format($items['price'], 0, ',', '.') ?> VND</p>
 								</td>
-								<td class="cart_quantity">
+								<!-- <td class="cart_quantity">
 									<form action="<?php echo base_url('update-cart-item') ?>" method="POST">
 
 										<div class="cart_quantity_button">
@@ -55,7 +55,21 @@
 
 										</div>
 									</form>
+								</td> -->
+
+								<!-- cap nhat so luong bang ajax -->
+								<td class="cart_quantity">
+									<input class="cart_quantity_input auto-update-qty" type="number"
+										min="1"
+										max="<?php echo $items['options']['in_stock']; ?>"
+										value="<?php echo $items['qty']; ?>"
+										data-rowid="<?php echo $items['rowid']; ?>"
+										data-price="<?php echo $items['price']; ?>"
+										data-product-id="<?php echo $items['id']; ?>"
+										autocomplete="off">
 								</td>
+								<!-- cap nhat so luong bang ajax -->
+
 								<td class="in_stock">
 									<p><?php echo $items['options']['in_stock'] ?></p>
 								</td>
@@ -153,3 +167,32 @@
 	</div>
 
 </section>
+<!-- cap nhat so luong ajax -->
+<script>
+$(document).ready(function () {
+    $('.auto-update-qty').on('change', function () {
+        let rowid = $(this).data('rowid');
+        let quantity = $(this).val();
+
+        $.ajax({
+            url: '<?php echo base_url("update-cart-item-ajax") ?>',
+            type: 'POST',
+            data: {
+                rowid: rowid,
+                quantity: quantity
+            },
+            success: function (res) {
+                let result = JSON.parse(res);
+                if (result.success) {
+                    location.reload(); // Reload lại để cập nhật tổng tiền, giảm giá, ...
+                } else {
+                    alert(result.message || 'Có lỗi xảy ra khi cập nhật');
+                }
+            },
+            error: function () {
+                alert('Lỗi hệ thống, vui lòng thử lại sau');
+            }
+        });
+    });
+});
+</script>

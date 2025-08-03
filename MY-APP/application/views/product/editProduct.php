@@ -101,6 +101,21 @@
 
 
                             </div>
+
+<!--new -->
+<div class="col-lg-6">
+                            <div class="form-group">
+    <label for="set">Giới tính<span class="text-danger">(*)</span></label>
+    <select name="set" class="form-control">
+        <option value="">-- Chọn giới tính --</option>
+        <option value="Nam" <?php echo ($product->set == 'Nam') ? 'selected' : ''; ?>>Nam</option>
+        <option value="Nữ" <?php echo ($product->set == 'Nữ') ? 'selected' : ''; ?>>Nữ</option>
+        <option value="Unisex" <?php echo ($product->set == 'Unisex') ? 'selected' : ''; ?>>Unisex</option>
+    </select>
+    <?php echo '<span class="text-danger">' . form_error('Set') . '</span>' ?>
+</div>
+</div>
+<!--new -->
                             <div class="col-lg-6">
 
                                 <div class="form-row">

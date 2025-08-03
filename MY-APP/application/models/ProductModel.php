@@ -95,8 +95,25 @@ class productModel extends CI_Model
         return $query->result();
     }
 
+
+
+
     public function countAllProduct()
     {
         return $this->db->where(['status' => 1])->count_all_results('product');
     }
+
+//     //tk ảnh
+//     public function get_products_by_ids($ids = []) {
+//     if (empty($ids)) return [];
+
+//     // Ép tất cả ID về số nguyên để chắc chắn khớp với kiểu BIGINT
+//     $ids = array_map('intval', $ids);
+
+//     $this->db->where_in('ProductID', $ids);
+//     $query = $this->db->get('product');
+//     return $query->result_array();
+// }
+  
+
 }

@@ -4,7 +4,7 @@
 			<?php } elseif($this->session->flashdata('error')) { ?>
 				<div class="alert alert-danger"><?php echo $this->session->flashdata('error') ?></div>
 			<?php } ?>
-    <h1 style="color: #FE980F">Nhập vào mật khẩu mới</h1>
+    <h1 style="color: brown;">Nhập vào mật khẩu mới</h1>
     <form action="<?php echo base_url('changePassword'); ?>" method="POST">
         <div class="form-group">
         <input type="hidden" name="email" value="<?php echo $email; ?>">
@@ -13,6 +13,6 @@
         <br>
         <input type="password" class="form-control" id="password2" name="password" placeholder="Nhập lại mật khẩu mới" required>
         </div>
-        <button style="margin-bottom: 100px" type="submit" class="btn btn-primary">Cập nhật</button>
+        <button style="margin-bottom: 100px" type="submit" class="btn btn-success">Cập nhật</button>
     </form>
 </div>

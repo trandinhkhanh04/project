@@ -41,6 +41,9 @@ $route['danh-muc/(:any)/(:any)']['GET'] = 'IndexController/category/$1/$2';
 $route['thuong-hieu/(:any)/(:any)']['GET'] = 'IndexController/brand/$1/$2';
 $route['san-pham/(:any)/(:any)']['GET'] = 'IndexController/product/$1/$2';
 
+$route['gioi-tinh/(:any)/(:num)']['GET']   = 'IndexController/gender/$1/$2';
+$route['gioi-tinh/(:any)']['GET']         = 'IndexController/gender/$1';
+
 /* PAGINATION HOME */
 $route['pagination/index']['GET'] = 'IndexController/index';
 $route['pagination/index/(:num)']['GET'] = 'IndexController/index/$1';
@@ -49,18 +52,20 @@ $route['pagination/danh-muc/(:any)/(:any)/(:any)']['GET'] = 'IndexController/cat
 $route['pagination/thuong-hieu/(:any)/(:any)/(:any)']['GET'] = 'IndexController/brand/$1/$2/$3';
 $route['pagination/thuong-hieu/(:any)/(:any)']['GET'] = 'IndexController/brand/$1/$2';
 
-
 /* PRODUCT ON SALE */
 $route['product-on-sale']['GET'] = 'IndexController/product_on_sale';
 $route['product-on-sale/(:num)']['GET'] = 'IndexController/product_on_sale/$1';
 
 /* CART */
 $route['gio-hang']['GET'] = 'IndexController/cart';
+$route['update-cart-item-ajax'] = 'IndexController/update_cart_item_ajax';
+
 $route['add-to-cart']['POST'] = 'IndexController/add_to_cart';
 $route['update-cart-item']['POST'] = 'IndexController/update_cart_item';
 $route['delete-all-cart']['GET'] = 'IndexController/delete_all_cart';
 $route['delete-item/(:any)']['GET'] = 'IndexController/delete_item/$1';
-
+// test
+// $route['add-to-cart']['POST'] = 'SearchByImage/add_to_cart';
 
 /* CKECKOUT */
 $route['checkout']['GET'] = 'IndexController/checkout';
@@ -69,21 +74,15 @@ $route['confirm-checkout-method']['POST'] = 'checkoutController/confirm_checkout
 /* APPLY COUPON */
 $route['apply-coupon']['POST'] = 'IndexController/applyCoupon';
 
-
-
 /* LIST ORDER */
 $route['order_customer/listOrder']['GET'] = 'IndexController/listOrder';
 $route['order_customer/update-order-status']['POST'] = 'OrderController/update_order_status_COD';
 $route['order_customer/viewOrder/(:any)']['GET'] = 'IndexController/viewOrder/$1';
 $route['order_customer/customerCancelOrder/(:any)']['GET'] = 'OrderController/customerCancelOrder/$1';
 
-
-
 /* REVIEW PRODUCT */
 $route['review/order/(:any)']['GET'] = 'IndexController/reviewProducts/$1';
 $route['review/submitReviews']['POST'] = 'IndexController/submitReviews';
-
-
 
 /* THANK PAGE */
 $route['thank-you-for-order']['GET'] = 'checkoutController/thank_you_for_order';
@@ -92,6 +91,15 @@ $route['thank-you-for-payment']['GET'] = 'checkoutController/thank_you_for_payme
 /* SEARCH PRODUCT */
 $route['search-product']['GET'] = 'IndexController/search_product';
 $route['search-product/(:any)']['GET'] = 'IndexController/search_product/$1';
+
+$route['searchbyimage'] = 'SearchByImage/index';
+$route['searchbyimage-result'] = 'SearchByImage/result';
+$route['searchbyimage/(:num)'] = 'SearchByImage/result/$1';
+
+// Route cho trang upload ảnh tìm kiếm
+$route['search-by-image'] = 'SearchByImage/index';
+// Route xử lý sau khi upload ảnh để tìm sản phẩm
+$route['search-by-image/do'] = 'SearchByImage/search';
 
 /* CUSTOMER INFO */
 $route['profile-user']['GET'] = 'IndexController/profile_user';
@@ -105,21 +113,12 @@ $route['send-mail'] = 'IndexController/send_mail';
 
 
 
-
-
-
-
-
-
-
-
-
                                             /* ADMIN */
+
 
 /* DASHBOARD */
 $route['dashboard']['GET'] = 'DashboardController/index';
 $route['logout_admin']['GET'] = 'DashboardController/logout';
-
 
 /* MANAGE CUSTOMER ACCOUNT */
 $route['manage-customer/list']['GET'] = 'CustomerController/index';
@@ -129,6 +128,24 @@ $route['manage-customer/update/(:any)']['POST'] = 'CustomerController/updateCust
 $route['manage-customer/bulkUpdate']['POST'] = 'CustomerController/bulkUpdateCustomer';
 
 $route['manage-customer/delete/(:any)']['GET'] = 'CustomerController/deleteCustomer/$1';
+
+/* MANAGE SHIPPER ACCOUNT */
+$route['manage-shipper/list']['GET'] = 'ShipperAdmin/index';
+$route['manage-shipper/list/(:num)']['GET'] = 'ShipperAdmin/index/$1';
+$route['shipperadmin/update/(:num)'] = 'ShipperAdmin/update/$1';
+$route['shipperadmin/delete/(:num)'] = 'ShipperAdmin/delete/$1';
+
+/*SHIPPER ACCOUNT */
+$route['shipper/login'] = 'shipper_auth/login';
+$route['shipper/logout'] = 'shipper_auth/logout';
+$route['shipper/dashboard'] = 'shipper/dashboard';
+$route['shipper/order_detail/(:any)'] = 'shipper/order_detail/$1';
+
+$route['shipper/dashboard/(:any)'] = 'shipper/dashboard/$1';
+$route['shipper/profile'] = 'Shipper/profile';
+$route['shipper/updateProfile'] = 'shipper/updateProfile';
+$route['shipper/index'] = 'Shipper/index';
+
 
 
 /* MANAGE ROLE */
@@ -181,8 +198,6 @@ $route['product/list/bulkUpdate']['POST'] = 'ProductController/bulkUpdateProduct
 
 $route['product/delete/(:any)']['GET'] = 'ProductController/deleteProduct/$1';
 
-
-
 /* MANAGE SUPPLIERS */
 $route['supplier/list']['GET'] = 'SupplierController/index';
 $route['supplier/list/(:num)']['GET'] = 'SupplierController/index/$1';
@@ -191,8 +206,6 @@ $route['supplier/create']['GET'] = 'SupplierController/createSupplier';
 $route['supplier/storage']['POST'] = 'SupplierController/storageSupplier';
 $route['supplier/update/(:any)']['POST'] = 'SupplierController/updateSupplier/$1';
 $route['supplier/list/bulkUpdate']['POST'] = 'SupplierController/bulkUpdateSupplier';
-
-
 
 /* MANAGE WAREHOUSE */
 $route['warehouse/list']['GET'] = 'WarehouseController/index';
@@ -204,7 +217,6 @@ $route['warehouse/receive-goods-history/(:num)']['GET'] = 'WarehouseController/r
 $route['warehouse/receive-goods-history/receipt_detail/(:any)']['GET'] = 'WarehouseController/receipt_detail/$1';
 $route['receive-goods/bulkPrint']['POST'] = 'WarehouseController/bulkPrintReceipts';
 
-
 /* MANAGE ORDER */
 $route['order_admin/listOrder']['GET'] = 'OrderController/index';
 $route['order_admin/listOrder/(:num)']['GET'] = 'OrderController/index/$1';
@@ -214,6 +226,8 @@ $route['order_admin/viewOrder/(:any)']['GET'] = 'OrderController/viewOrder/$1';
 $route['order_admin/printOrder/(:any)']['GET'] = 'OrderController/printOrder/$1';
 $route['order_admin/bulkPrint']['POST'] = 'OrderController/bulkPrint';
 // $route['order_admin/deleteOrder/(:any)']['GET'] = 'OrderController/deleteOrder/$1';
+$route['order_admin/assign_shipper']['POST'] = 'OrderController/assign_shipper';
+
 
 /* MANAGE COMMENT */
 $route['comment/send']['POST'] = 'DashboardController/comment_send';
@@ -222,7 +236,6 @@ $route['comment/list/edit/(:any)']['GET'] = 'DashboardController/editComment/$1'
 $route['comment/update/(:any)']['POST'] = 'DashboardController/updateComment/$1';
 $route['comment/delete/(:any)']['GET'] = 'DashboardController/deleteComment/$1';
 
-
 /* MANAGE REVIEWS */
 $route['review-list']['GET'] = 'ReviewController/index';
 $route['review-list/(:num)']['GET'] = 'ReviewController/index/$1';
@@ -230,10 +243,7 @@ $route['review-list/detail/(:num)']['GET'] = 'ReviewController/reviewProduct/$1'
 $route['review-list/detail/(:num)/(:num)']['GET'] = 'ReviewController/reviewProduct/$1/$2';
 $route['reply-comment']['POST'] = 'ReviewController/updateReview';
 
-
 /* MANAGE DISCOUNT CODE */
-
-
 $route['discount-code/list']['GET'] = 'DashboardController/discount_code_list';
 $route['discount-code/list/(:num)']['GET'] = 'DashboardController/discount_code_list/$1';
 $route['discount-code/list/edit/(:any)']['GET'] = 'DashboardController/discount_code_edit/$1';
@@ -269,3 +279,7 @@ $route['predict']['GET'] = 'PredictController/yolo_predict_page';
 $route['predict']['POST'] = 'PredictController/yolo_predict_page';
 $route['predict/(:num)']['GET']  = 'PredictController/yolo_predict_page/$1';
 $route['predict/(:num)']['POST'] = 'PredictController/yolo_predict_page/$1';
+
+
+//chat
+

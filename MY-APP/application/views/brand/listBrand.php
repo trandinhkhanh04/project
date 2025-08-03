@@ -12,7 +12,7 @@
                             <th scope="col">Title</th>
                             <th scope="col">Slug</th>
                             <th scope="col">Description</th>
-                            <th scope="col">Image</th>
+                            <th scope="col">Hình ảnh</th>
                             <th scope="col">Status</th>
                             <th scope="col">Manage</th>
                         </tr>

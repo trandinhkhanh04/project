@@ -79,4 +79,9 @@ class brandModel extends CI_Model
         return $this->db->where('brand_id', $brand_id)->count_all_results('products') > 0;
     }
 
+    //tk anh
+    public function get_all_brands() {
+        return $this->db->get('brand')->result_array(); // hoặc sửa lại tên bảng nếu không phải 'brand'
+    }
+
 }

@@ -10,14 +10,14 @@
 							<input type="password" name="password" placeholder="Nhập vào mật khẩu" />
 							<?php echo form_error('password'); ?>
 							<div style="display: flex; align-items: center;" class="">
-							<button type="submit" class="btn btn-default">Đăng nhập</button>
+							<button type="submit" class="btn btn-default" style="background-color: #808080;">Đăng nhập</button>
 							<a style="margin-left: 10px; margin-top: 20px" href="<?php echo base_url('forgot-password-layout')?>"><u>Quên mật khẩu</u></a>
 							</div>
 						</form>
 					</div><!--/login form-->
 				</div>
 				<div class="col-sm-1">
-					<h2 class="or">HOẶC</h2>
+					<h2 class="or" style="background-color: #808080;">HOẶC</h2>
 				</div>
 				<div class="col-sm-4">
 					<div class="signup-form"><!--sign up form-->
@@ -34,7 +34,7 @@
 							<input type="password" name="password" placeholder="Mật khẩu ít nhất 6 ký tự"/>
 							<?php echo form_error('password'); ?>
 							<div style="display: flex;">
-								<button type="submit" class="btn btn-default">Đăng ký</button>
+								<button type="submit" class="btn btn-default" style="background-color: #808080;">Đăng ký</button>
 								
 							</div>
 							

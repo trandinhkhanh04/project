@@ -1,6 +1,6 @@
 <div style="min-height: 500px;" class="container">
     <div class="card">
-        <h1 class="title">Danh sách đơn hàng</h1>
+        <h1 class="title" style="color: brown;">Danh sách đơn hàng</h1>
 
         <div class="card-body">
         <?php if (!empty($order_items)): ?>

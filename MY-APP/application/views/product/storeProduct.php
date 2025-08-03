@@ -61,6 +61,7 @@
                             </div>
                         </div>
 
+
                         <div class="row mb-3">
                             <div class="col-lg-6">
                                 <div class="form-group">
@@ -69,6 +70,20 @@
                                     <span class="text-danger"><?php echo form_error('Unit'); ?></span>
                                 </div>
                             </div>
+
+                            <!-- new -->
+                        <div class="col-lg-6">
+    <div class="form-group">
+        <label for="set">Giới tính<span class="text-danger">(*)</span></label>
+        <select name="set" class="form-control">
+            <option value="Nam" <?php echo set_select('set', 'Nam'); ?>>Nam</option>
+            <option value="Nữ" <?php echo set_select('set', 'Nữ'); ?>>Nữ</option>
+            <option value="Unisex" <?php echo set_select('set', 'Unisex', TRUE); ?>>Unisex</option>
+        </select>
+        <span class="text-danger"><?php echo form_error('set'); ?></span>
+    </div>
+</div>
+<!-- new -->
 
                             <div class="col-lg-6">
                                 <div class="form-group">

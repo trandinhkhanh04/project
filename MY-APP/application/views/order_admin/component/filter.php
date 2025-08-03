@@ -14,8 +14,25 @@
                 </select>
             </div>
 
+            
             <div class="action">
                 <div class="uk-flex uk-flex-middle">
+                    <!-- Lọc theo shipper -->
+                    <!-- <div class="mr10">
+                        <label for="shipper_id">Shipper</label>
+                        <?php
+                            $selected_shipper = isset($_GET['shipper_id']) ? $_GET['shipper_id'] : '';
+                        ?>
+                        <select name="shipper_id" id="shipper_id" class="form-control setupSelect2" style="min-width: 150px;">
+                            <option value="">Tất cả shipper</option>
+                            <?php foreach ($shippers as $shipper): ?>
+                                <option value="<?= $shipper->id ?>" <?= ($selected_shipper == $shipper->id) ? 'selected' : '' ?>>
+                                    <?= $shipper->name ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>  -->
+
                     <div class="mr10 filter-date-order">
                         <label for="date_from">Chọn ngày bắt đầu</label>
                         <input type="date" name="date_from" id="date_from" value="<?php echo $date_from; ?>" class="form-control" style="width: 150px;">

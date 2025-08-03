@@ -71,8 +71,15 @@
                     <?php } ?>
                 </tbody>
             </table>
+           
             <div style="width: 100%; height:100px; position: relative;">
+                <?php if (isset($shipper) && $shipper): ?>
+                  <h4>Người vận chuyển: <?= $shipper->Name . ' (' . $shipper->Phone . ')' ?></h4>
+                <?php endif; ?>
                 <div style="display: flex; position: absolute; right: 0px; top: -30px;">
+
+                
+
                     <h3>TỔNG THANH TOÁN:
                         <h3 style="color: #FE980F; margin-left: 10px">
                             <?php echo number_format($total_sub, 0, ',', '.') ?> VNĐ

@@ -19,6 +19,91 @@ class orderModel extends CI_Model
         return $order_detail_id = $this->db->insert_id();
     }
 
+    public function assignShipperToOrder($order_code, $shipper_id)
+{
+    $this->db->where('Order_Code', $order_code);
+    return $this->db->update('orders', ['ShipperID' => $shipper_id]);
+}
+
+
+public function getAllShippers()
+{
+    return $this->db->get('shippers')->result();
+}
+
+public function getOrderByCode($order_code)
+{
+    return $this->db->where('Order_Code', $order_code)->get('orders')->row();
+}
+
+public function getShipperById($shipperID)
+{
+    $this->db->where('ShipperID', $shipperID);
+    return $this->db->get('shippers')->row();
+}
+
+public function countOrdersByShipper($shipper_id)
+{
+    return $this->db->where('ShipperID', $shipper_id)
+                    ->count_all_results('orders');
+}
+
+public function getOrdersByShipper($shipper_id)
+{
+    return $this->db->get_where('orders', ['ShipperID' => $shipper_id])->result();
+}
+
+public function getByCode($order_code)
+{
+    return $this->db->get_where('orders', ['Order_Code' => $order_code])->row();
+}
+
+public function updateStatus($order_code, $status)
+{
+    return $this->db->update('orders', ['Status' => $status], ['Order_Code' => $order_code]);
+}
+
+public function getOrderByID($id)
+{
+    return $this->db->get_where('orders', ['OrderID' => $id])->row();
+}
+
+public function markAsDelivered($id)
+{
+    $this->db->where('OrderID', $id);
+    $this->db->update('orders', [
+        'Order_Status' => 4, // đã giao
+        'Date_delivered' => date('Y-m-d H:i:s')
+    ]);
+}
+
+public function countOrdersByStatus($shipper_id, $status_code) {
+    $this->db->where('ShipperID', $shipper_id);  // SỬA chỗ nà
+    $this->db->where('Order_Status', $status_code); 
+    return $this->db->count_all_results('orders');
+}
+
+
+public function getTotalAmountDelivered($shipper_id) {
+    $this->db->select_sum('TotalAmount');
+    $this->db->where('ShipperID', $shipper_id);  
+    $this->db->where('Order_Status', 4); 
+    $query = $this->db->get('orders');
+    return $query->row()->TotalAmount ?? 0;
+}
+
+public function getChartData($shipper_id) {
+    $this->db->select('DATE(Date_Order) as order_date, COUNT(*) as total');
+    $this->db->where('ShipperID', $shipper_id);  
+    $this->db->where('Date_Order IS NOT NULL');
+    $this->db->group_by('DATE(Date_Order)');
+    $this->db->order_by('order_date', 'ASC');
+    $query = $this->db->get('orders');
+    return $query->result_array();
+}
+
+
+
 
     public function getOrderStatus($order_code)
     {
@@ -268,6 +353,11 @@ class orderModel extends CI_Model
             $this->db->where('orders.Date_Order <=', $filter['date_to'] . ' 23:59:59');
         }
 
+        //new
+        if (!empty($filter['shipper_id'])) {
+            $this->db->where('orders.ShipperID', $filter['shipper_id']);
+        }
+
 
 
         if (!empty($filter['sort_total_amount'])) {
@@ -328,6 +418,9 @@ class orderModel extends CI_Model
 
         if (!empty($filter['date_to'])) {
             $this->db->where('orders.Date_Order <=', $filter['date_to'] . ' 23:59:59');
+        }
+        if (!empty($filter['shipper_id'])) {
+            $this->db->where('orders.ShipperID', $filter['shipper_id']);
         }
 
 

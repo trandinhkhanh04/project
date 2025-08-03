@@ -43,6 +43,25 @@ class indexModel extends CI_Model
         return $query->result();
     }
 
+        // Đếm tổng sản phẩm theo giới tính
+    public function countByGender($set)
+    {
+        return $this->db
+                    ->where('LOWER(`set`)', strtolower($set))
+                    ->count_all_results('product');
+    }
+
+    // Lấy phân trang sản phẩm theo giới tính
+    public function getByGenderPagination($set, $limit, $offset)
+    {
+        return $this->db
+                    ->where('LOWER(`set`)', strtolower($set))
+                    ->limit($limit, $offset)
+                    ->get('product')
+                    ->result();
+    }
+
+
 
 
     public function getCustomerToken($email)

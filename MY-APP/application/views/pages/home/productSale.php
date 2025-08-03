@@ -2,25 +2,29 @@
     <div class="container">
         <div class="row">
             <?php $this->load->view('pages/component/sidebar'); ?>
-            <div class="col-sm-9 padding-right">
+            <div class="col">
                 <div class="features_items">
-                    <h2 class="title text-center">Danh sách sản phẩm giảm giá</h2>
+                    <h2 class="title text-center" style="color: brown;">Danh sách sản phẩm giảm giá</h2>
                     <?php
                     foreach ($products_sale as $key => $allProOnSale) {
                         ?>
                         <form action="<?php echo base_url('add-to-cart') ?>" method="POST">
-                            <div class="col-sm-4">
+                            <!-- <div class="col-sm-3">
                                 <div class="product-image-wrapper">
                                     <input type="hidden" value="<?php echo $allProOnSale->ProductID ?>" name="ProductID">
                                     <input type="hidden" value="1" name="Quantity">
                                     <div class="single-products">
                                         <div class="productinfo text-center">
-                                            <!-- <div
+
+                                            //code cũ
+                                            <div
                                                 class="view-product <?php echo ($allProOnSale->total_remaining == 0) ? 'out-of-stock' : ''; ?>">
                                                 <img style="width: 300px; height: 300px"
                                                     src="<?php echo base_url('uploads/product/' . $allProOnSale->Image) ?>"
                                                     alt="<?php echo $allProOnSale->Name ?>" />
-                                            </div> -->
+                                            </div>
+                                            //code cũ
+                                            
                                             <img src="<?php echo base_url('uploads/product/' . $allProOnSale->Image) ?>"
                                                 alt="<?php echo $allProOnSale->Name ?>" />
 
@@ -46,15 +50,52 @@
 
                                             <p><?php echo $allProOnSale->Name ?></p>
                                             <a href="<?php echo base_url('san-pham/' . $allProOnSale->ProductID . '/' . $allProOnSale->Slug) ?>"
-                                                class="btn btn-default add-to-cart"><i class="fa fa-eye"></i>Details</a>
+                                                class="btn btn-default add-to-cart"><i class="fa fa-eye"></i>Chi tiết</a>
                                             <button type="submit" class="btn btn-default cart">
                                                 <i class="fa fa-shopping-cart"></i>
-                                                Add to cart
+                                                Thêm vào giỏ
                                             </button>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
+                           
+        
+                            <div class="col-sm-3">
+  <form action="<?php echo base_url('add-to-cart') ?>" method="POST">
+    <input type="hidden" value="<?php echo $allProOnSale->ProductID ?>" name="ProductID">
+    <input type="hidden" value="1" name="Quantity">
+
+    <div class="product-image-wrapper">
+      <a href="<?php echo base_url('san-pham/' . $allProOnSale->ProductID . '/' . $allProOnSale->Slug) ?>" class="product-link">
+        <div class="productinfo text-center">
+          <img src="<?php echo base_url('uploads/product/' . $allProOnSale->Image) ?>" alt="<?php echo $allProOnSale->Name ?>" />
+          <p class="product-name"><?php echo $allProOnSale->Name ?></p>
+        </div>
+      </a>
+
+      <div class="product-footer">
+        <div class="product-price">
+          <?php if (isset($allProOnSale->Promotion) && $allProOnSale->Promotion != 0): 
+              $price_no_Promotion = $allProOnSale->Selling_price;
+              $Selling_price = $price_no_Promotion * (1 - $allProOnSale->Promotion / 100);
+          ?>
+              <span class="discounted-price"><?php echo number_format($Selling_price, 0, ',', '.') ?> đ</span>
+              <span class="original-price"><?php echo number_format($price_no_Promotion, 0, ',', '.') ?> đ</span>
+          <?php else: ?>
+              <?php echo number_format($allProOnSale->Selling_price, 0, ',', '.') ?> đ
+          <?php endif; ?>
+        </div>
+
+        <div class="product-icons">
+          <button type="submit"><i class="fa fa-shopping-cart"></i></button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+
                         </form>
                     <?php } ?>
                 </div>

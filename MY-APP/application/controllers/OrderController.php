@@ -50,6 +50,8 @@ class orderController extends CI_Controller
 		$this->load->model('orderModel');
 
 		// --- Lấy filter từ GET ---
+		$shipper_id = $this->input->get('shipper_id', TRUE);
+
 		$date_from = $this->input->get('date_from', TRUE);
 		$date_to   = $this->input->get('date_to', TRUE);
 		$keyword         = $this->input->get('keyword', TRUE);
@@ -72,7 +74,9 @@ class orderController extends CI_Controller
 			'date_from'       => $date_from,
 			'date_to'         => $date_to,
 			'sort_order'      => $sort_order,
-			'sort_total_amount'	=> $sort_total_amount
+			'sort_total_amount'	=> $sort_total_amount,
+			'shipper_id' => $shipper_id
+
 		];
 
 		$total = $this->orderModel->countOrder($filter);
@@ -100,6 +104,8 @@ class orderController extends CI_Controller
 
 		$data['keyword']         = $keyword;
 		$data['status']          = $status;
+		$data['shipper_id'] 	 = $shipper_id;
+
 		$data['checkout_method'] = $checkout_method;
 		$data['sort_order'] 	 = $sort_order;
 		$data['perpage']         = $perpage;
@@ -115,9 +121,14 @@ class orderController extends CI_Controller
 		$data['date_to']   = $date_to;
 
 		$data['template'] = "order_admin/index";
+		//new
+		$this->load->model('ShipperModel');
+		$data['shippers'] = $this->ShipperModel->getAll();
+		//end new
 		$this->load->view("admin-layout/admin-layout", $data);
 	}
 
+	
 
 
 	public function viewOrder($order_code)
@@ -125,6 +136,7 @@ class orderController extends CI_Controller
 		$this->config->config['pageTitle'] = 'View Order';
 		$this->load->model('orderModel');
 		$data['order_details'] = $this->orderModel->selectOrderDetails($order_code);
+		$data['shippers'] = $this->orderModel->getAllShippers();
 
 		// echo '<pre>';
 		// print_r($data['order_details']);
@@ -141,6 +153,9 @@ class orderController extends CI_Controller
 				// echo '</pre>';
 
 			}
+			$data['order'] = $this->orderModel->getOrderByCode($order_code); // để biết đơn hàng đang có shipper nào
+			
+            $data['shippers'] = $this->orderModel->getAllShippers(); // lấy danh sách shipper
 
 			$data['title'] = "Chi tiết đơn hàng";
 			$data['breadcrumb'] = [
@@ -153,73 +168,150 @@ class orderController extends CI_Controller
 		} else {
 			$this->session->set_flashdata('error', 'Không có đơn hàng nào');
 			redirect(base_url('dashboard'));
-		}
+		}  
 	}
 
 
+public function assign_shipper()
+{
+    $order_code = $this->input->post('Order_Code');
+    $shipper_id = $this->input->post('ShipperID');
+
+    if ($order_code && $shipper_id) {
+        $this->load->model('orderModel');
+        $this->orderModel->assignShipperToOrder($order_code, $shipper_id);
+        $this->session->set_flashdata('success', 'Đã gán shipper cho đơn hàng.');
+    } else {
+        $this->session->set_flashdata('error', 'Vui lòng chọn shipper.');
+    }
+
+    redirect('order_admin/viewOrder/' . $order_code);
+}
 
 
-	public function update_order_status_old()
-	{
-		$value = $this->input->post('value');
-		$order_code = $this->input->post('Order_Code');
-		$product_qty_in_batch = $this->input->post('product_qty_in_batch');
+public function update_order_status()
+{
+    $value = $this->input->post('value');
+    $order_code = $this->input->post('Order_Code');
+    $product_qty_in_batch = $this->input->post('product_qty_in_batch');
 
-		$this->load->model('orderModel');
+    $this->load->model('orderModel');
 
-		if ($value == 4) {
-			$timenow = Carbon\Carbon::now('Asia/Ho_Chi_Minh')->toDateTimeString();
-			$data_order = array(
-				'Order_Status' => $value,
-				'Payment_Status' => 1,
-				'Date_delivered' => $timenow,
-				'Payment_date_successful' => $timenow
-			);
-			$this->orderModel->updateOrder($data_order, $order_code);
-			if (!empty($product_qty_in_batch)) {
-				foreach ($product_qty_in_batch as $batch) {
-					$batch_id = $batch['Batch_ID'];
-					$quantity_to_deduct = $batch['QuantityToTake'];
+    try {
+        if ($value == 4) {
+            $timenow = Carbon\Carbon::now('Asia/Ho_Chi_Minh')->toDateTimeString();
+            $data_order = array(
+                'Order_Status' => $value,
+                'Payment_Status' => 1,
+                'Date_delivered' => $timenow,
+                'Payment_date_successful' => $timenow
+            );
+            $this->orderModel->updateOrder($data_order, $order_code);
 
-					$this->orderModel->deductBatchQuantity($batch_id, $quantity_to_deduct);
-				}
-			} else {
-				$this->session->set_flashdata('error', 'Lỗi không thể cập nhật số lượng');
-				redirect(base_url('order_admin/listOrder'));
-			}
-		} elseif ($value == 5) {
-			$data_order = array(
-				'Order_Status' => $value,
-			);
-			$this->orderModel->updateOrder($data_order, $order_code);
-		} else {
-			$data_order = array(
-				'Order_Status' => $value
-			);
-			$this->orderModel->updateOrder($data_order, $order_code);
-		}
-	}
+            if (!empty($product_qty_in_batch)) {
+                foreach ($product_qty_in_batch as $batch) {
+                    $batch_id = $batch['Batch_ID'];
+                    $quantity_to_deduct = $batch['QuantityToTake'];
+                    $this->orderModel->deductBatchQuantity($batch_id, $quantity_to_deduct);
+                }
+            } else {
+                // Trả về lỗi JSON nếu thiếu số lượng lô hàng
+                header('Content-Type: application/json');
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'Lỗi: Không thể cập nhật số lượng vì không có dữ liệu lô hàng.'
+                ]);
+                return;
+            }
+        } else {
+            $data_order = array('Order_Status' => $value);
+            $this->orderModel->updateOrder($data_order, $order_code);
+        }
+
+        //Trả về kết quả JSON thành công
+        header('Content-Type: application/json');
+        echo json_encode([
+            'success' => true,
+            'message' => 'Cập nhật đơn hàng thành công!'
+        ]);
+        return;
+    } catch (Exception $e) {
+        //Trả về lỗi JSON nếu có exception
+        header('Content-Type: application/json');
+        echo json_encode([
+            'success' => false,
+            'message' => 'Đã xảy ra lỗi: ' . $e->getMessage()
+        ]);
+        return;
+    }
+}
 
 
-	public function update_order_status()
-	{
-		$value = (int)$this->input->post('value');
-
-		echo $value; die();
 
 
-		$order_code = $this->input->post('Order_Code');
-		if (!is_array($order_code)) {
-			$order_code = [$order_code];
-		}
-		$product_qty_in_batch = $this->input->post('product_qty_in_batch');
+	// public function update_order_status()
+	// {
+	// 	$value = $this->input->post('value');
+	// 	$order_code = $this->input->post('Order_Code');
+	// 	$product_qty_in_batch = $this->input->post('product_qty_in_batch');
 
-		$this->load->model('orderModel');
-		$result = $this->orderModel->process_order_status_update($value, $order_code, $product_qty_in_batch);
+		
 
-		echo json_encode($result);
-		return;
-	}
+	// 	$this->load->model('orderModel');
+
+	// 	if ($value == 4) {
+	// 		$timenow = Carbon\Carbon::now('Asia/Ho_Chi_Minh')->toDateTimeString();
+	// 		$data_order = array(
+	// 			'Order_Status' => $value,
+	// 			'Payment_Status' => 1,
+	// 			'Date_delivered' => $timenow,
+	// 			'Payment_date_successful' => $timenow
+	// 		);
+	// 		$this->orderModel->updateOrder($data_order, $order_code);
+	// 		if (!empty($product_qty_in_batch)) {
+	// 			foreach ($product_qty_in_batch as $batch) {
+	// 				$batch_id = $batch['Batch_ID'];
+	// 				$quantity_to_deduct = $batch['QuantityToTake'];
+
+	// 				$this->orderModel->deductBatchQuantity($batch_id, $quantity_to_deduct);
+	// 			}
+	// 		} else {
+	// 			$this->session->set_flashdata('error', 'Lỗi không thể cập nhật số lượng');
+	// 			redirect(base_url('order_admin/listOrder'));
+	// 		}
+	// 	} elseif ($value == 5) {
+	// 		$data_order = array(
+	// 			'Order_Status' => $value,
+	// 		);
+	// 		$this->orderModel->updateOrder($data_order, $order_code);
+	// 	} else {
+	// 		$data_order = array(
+	// 			'Order_Status' => $value
+	// 		);
+	// 		$this->orderModel->updateOrder($data_order, $order_code);
+	// 	}
+	// }
+
+
+	// public function update_order_status()
+	// {
+	// 	$value = (int)$this->input->post('value');
+
+	// 	echo $value; die();
+
+
+	// 	$order_code = $this->input->post('Order_Code');
+	// 	if (!is_array($order_code)) {
+	// 		$order_code = [$order_code];
+	// 	}
+	// 	$product_qty_in_batch = $this->input->post('product_qty_in_batch');
+
+	// 	$this->load->model('orderModel');
+	// 	$result = $this->orderModel->process_order_status_update($value, $order_code, $product_qty_in_batch);
+
+	// 	echo json_encode($result);
+	// 	return;
+	// }
 
 
 	public function bulkUpdate()
@@ -297,7 +389,7 @@ class orderController extends CI_Controller
 
 		$html = '
 		<h2 style="text-align: center;">HÓA ĐƠN MUA HÀNG</h2>
-		<p style="text-align: center;">Cảm ơn bạn đã mua sắm tại <strong>Pesticide Shop</strong></p>
+		<p style="text-align: center;">Cảm ơn bạn đã mua sắm tại <strong>Noir Essence</strong></p>
 		<p><strong>Mã đơn hàng:</strong> ' . $order_code . '</p>
 		<p><strong>Ngày in:</strong> ' . date('d/m/Y') . '</p>
 		<p><strong>Khách hàng:</strong> ' . $customer_name . '</p>
@@ -345,7 +437,7 @@ class orderController extends CI_Controller
 		if (!empty($first->DiscountID)) {
 			if ($first->Discount_type == 'Fixed') {
 				$discount_value = $first->Discount_value;
-			} elseif ($first->Discount_type == 'Percent') {
+			} elseif ($first->Discount_type == 'Percentage') {
 				$discount_value = $total * ($first->Discount_value / 100);
 				if (!empty($first->Max_discount)) {
 					$discount_value = min($discount_value, $first->Max_discount);
@@ -362,13 +454,14 @@ class orderController extends CI_Controller
 			<td style="text-align: center;">' . number_format($total, 0, ',', '.') . 'đ</td>
 		</tr>';
 
-		if ($discount_value > 0) {
-			$html .= '
-		<tr style="font-weight: bold; text-align: right;">
-			<td colspan="6">Mã giảm giá (' . $first->Coupon_code . '):</td>
-			<td style="text-align: center;">- ' . number_format($discount_value, 0, ',', '.') . 'đ</td>
-		</tr>';
-		}
+		if (!empty($first->DiscountID)) {
+	$html .= '
+	<tr style="font-weight: bold; text-align: right;">
+		<td colspan="6">Mã giảm giá (' . $first->Coupon_code . '):</td>
+		<td style="text-align: center;">- ' . number_format($discount_value, 0, ',', '.') . 'đ</td>
+	</tr>';
+}
+
 
 		$html .= '
 		<tr style="font-weight: bold; text-align: right;">

@@ -8,6 +8,9 @@
 				class="navbar-minimalize minimalize-styl-2 btn btn-primary"
 				href="#"><i class="fa fa-bars"></i>
 			</a>
+			
+			
+
 			<form
 				role="search"
 				class="navbar-form-custom"
@@ -24,7 +27,8 @@
 		</div>
 		<ul class="nav navbar-top-links navbar-right">
 			<li>
-				<span class="m-r-sm text-muted welcome-message">Chào mừng bạn đến trang giao diện quản trị viên</span>
+				<!-- <span class="m-r-sm text-muted welcome-message">Chào mừng bạn đến trang giao diện quản trị viên</span> -->
+				 <span class="m-r-sm text-muted welcome-message">Trang quản trị viên</span>
 			</li>
 			
 			<li>

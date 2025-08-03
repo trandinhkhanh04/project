@@ -170,3 +170,45 @@
 	});
 </script>
 
+<!-- giong noi -->
+ <script>
+  function startVoiceSearch() {
+    if (!('webkitSpeechRecognition' in window)) {
+      alert("Trình duyệt của bạn không hỗ trợ tìm kiếm bằng giọng nói.");
+      return;
+    }
+
+    const recognition = new webkitSpeechRecognition();
+    recognition.lang = 'vi-VN'; // Ngôn ngữ tiếng Việt
+    recognition.interimResults = false; // Không lấy kết quả tạm
+    recognition.maxAlternatives = 1;
+
+    recognition.onstart = () => {
+      document.getElementById("voiceStatus").innerText = "🎤 Đang nghe...";
+    };
+
+    recognition.onresult = (event) => {
+      const transcript = event.results[0][0].transcript;
+      document.getElementById("searchKeyword").value = transcript; // ✅ Đưa kết quả vào input
+      document.getElementById("voiceStatus").innerText = "✅ Đã nhập từ: " + transcript;
+      // document.querySelector("form").submit(); // 👉 Nếu muốn tự submit thì mở dòng này
+    };
+
+    recognition.onerror = (event) => {
+      document.getElementById("voiceStatus").innerText = "❌ Lỗi: " + event.error;
+    };
+
+    recognition.onend = () => {
+      // Đang nghe kết thúc
+    };
+
+    recognition.start();
+  }
+</script>
+
+
+
+
+
+
+

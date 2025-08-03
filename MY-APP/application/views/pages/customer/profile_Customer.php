@@ -147,12 +147,12 @@ defined('BASEPATH') or exit('No direct script access allowed');
                                 <div class="d-flex">
                                 <div class="">
                                     <a style="width: 10px" href="<?php echo base_url('customer/edit/' . $profile_user->UserID) ?>">
-                                        <button class="btn btn-primary" type="button">Chỉnh sửa</button>
+                                        <button class="btn btn-danger" type="button">Chỉnh sửa</button>
                                     </a>
                                 </div>
                                 <div class="">
                                     <a style="margin-left: 10px" href="<?php echo base_url('confirmPassword') ?>">
-                                        <button onclick="return confirm('Bạn chắc chắn muốn đổi mật khẩu?')" class="btn btn-primary" type="button">Đổi mật khẩu</button>
+                                        <button onclick="return confirm('Bạn chắc chắn muốn đổi mật khẩu?')" class="btn btn-success" type="button">Đổi mật khẩu</button>
                                     </a>
 
                                 </div>

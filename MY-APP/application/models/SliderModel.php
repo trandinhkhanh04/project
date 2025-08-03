@@ -32,6 +32,7 @@
         {
             return $this->db->delete('sliders',['id'=>$id]);   
         }
+        
     }
 
 ?>

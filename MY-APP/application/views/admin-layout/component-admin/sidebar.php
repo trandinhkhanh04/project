@@ -97,11 +97,23 @@ $sidebar_menu = [
        
         ]
     ],
+    'shipper' => [
+        'label' => 'Quản lý shipper',
+        'icon' => 'fas fa-motorcycle',
+        'children' => [
+            ['label' => 'Danh sách shipper', 'url' => 'shipperAdmin/index', 'sub' => 'index'],
+
+            // ['label' => 'Thêm shipper', 'url' => 'shipperAdmin/create', 'sub' => 'create'],
+    ]
+],
+
 ];
 
 ?>
 
-
+<a href="https://dashboard.tawk.to/#/chat" target="_blank" class="btn btn-primary">
+    Mở bảng điều khiển Chat
+</a>
 <nav class="navbar-default navbar-static-side" role="navigation">
     <div class="sidebar-collapse">
         <ul class="nav metismenu" id="side-menu">
@@ -109,12 +121,12 @@ $sidebar_menu = [
                 <div class="dropdown profile-element">
                     <span>
                         <img width="50" height="50" class="img-circle"
-                            src="<?php echo base_url('uploads/user/1743060974cabybara.jpg') ?>" />
+                            src="<?php echo base_url('frontend/image/user9.png') ?>" />
                     </span>
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                         <span class="clear">
                             <span class="block m-t-xs"><strong class="font-bold">Định Khánh</strong></span>
-                            <span class="text-muted text-xs block">Thao tác<b class="caret"></b></span>
+                            <!-- <span class="text-muted text-xs block">Thao tác<b class="caret"></b></span> -->
                         </span>
                     </a>
                     <ul class="dropdown-menu animated fadeInRight m-t-xs">

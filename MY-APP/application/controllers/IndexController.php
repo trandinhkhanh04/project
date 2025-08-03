@@ -95,7 +95,7 @@ class IndexController extends CI_Controller
 		$this->load->library('pagination');
 		$this->load->model('IndexModel');
 		$total_products = $this->IndexModel->countAllProduct();
-		$per_page = 6;
+		$per_page = 8;
 		$uri_segment = 3;
 		$base_url = base_url('pagination/index');
 
@@ -120,6 +120,38 @@ class IndexController extends CI_Controller
 	}
 
 
+	public function gender($set = null, $page = 1)
+{
+    $this->load->helper('pagination');
+    $this->load->library('pagination');
+    $this->load->model('IndexModel');
+
+    // 1) Tính tổng sản phẩm theo giới tính
+    $total = $this->IndexModel->countByGender($set);
+
+    // 2) Thiết lập phân trang
+    $per_page     = 8;
+    $uri_segment  = 3;        // nếu URL là /gioi-tinh/nam/2 thì segment 3 = page
+    $base_url     = base_url("gioi-tinh/{$set}");
+
+    $this->data['links'] = init_pagination($base_url, $total, $per_page, $uri_segment);
+
+    // 3) Tính offset và lấy dữ liệu
+    $page  = max(1, (int)$page);
+    $start = ($page - 1) * $per_page;
+    $this->data['allproduct_pagination'] = $this->IndexModel->getByGenderPagination($set, $per_page, $start);
+
+    // 4) Các dữ liệu phụ (bestsellers, sliders…)
+	// Truyền $Name ra view
+    $this->data['Name'] = ucfirst($set); // viết hoa chữ cái đầu, ví dụ "Nam"
+    $this->data['sliders']     = $this->SliderModel->selectAllSlider();
+
+    // 5) View & layout
+    $this->data['template'] = "pages/product/product";   // sử dụng chung template home
+    $this->data['page_title'] = 'Giới tính: ' . ucfirst($set);
+
+    $this->load->view("pages/layout/index", $this->data);
+}
 
 
 	public function search_product()
@@ -128,6 +160,13 @@ class IndexController extends CI_Controller
 		$this->load->library('pagination');
 
 		$keyword = $this->input->get('keyword', TRUE);
+
+		//Kiểm tra nếu keyword rỗng thì chuyển về trang chủ
+		if (empty($keyword)) {
+			redirect(base_url());
+		}
+
+
 		$per_page = 6;
 		$uri_segment = 3;
 		$base_url = base_url('search-product');
@@ -402,19 +441,33 @@ class IndexController extends CI_Controller
 
 
 	public function viewOrder($order_code)
-	{
+{
+    $this->load->model('orderModel');
+    $this->load->model('productModel');
 
-		$this->load->model('orderModel');
-		$this->load->model('productModel');
-		$data['order_details'] = $this->orderModel->selectOrderDetails($order_code);
-		foreach ($data['order_details'] as $order_detail) {
-			$product_details = $this->productModel->selectProductById($order_detail->ProductID);
-			$order_detail->product_details = $product_details;
-		}
-		$this->data['order_details'] = $data['order_details'];
-		$this->data['template'] = 'pages/order/viewOrder';
-		$this->load->view("pages/layout/index", $this->data);
-	}
+    // Lấy chi tiết đơn hàng
+    $order_details = $this->orderModel->selectOrderDetails($order_code);
+    foreach ($order_details as $order_detail) {
+        $product_details = $this->productModel->selectProductById($order_detail->ProductID);
+        $order_detail->product_details = $product_details;
+    }
+
+    // Gán vào data
+    $this->data['order_details'] = $order_details;
+
+    // Lấy thông tin đơn hàng chính (để biết shipper nào được gán)
+    $order = $this->orderModel->getOrderByCode($order_code);
+    $this->data['order'] = $order;
+
+    // Lấy thông tin shipper nếu có
+    $shipperID = $order->ShipperID ?? null;
+    $this->data['shipper'] = $shipperID ? $this->orderModel->getShipperById($shipperID) : null;
+
+    // Load view
+    $this->data['template'] = 'pages/order/viewOrder';
+    $this->load->view("pages/layout/index", $this->data);
+}
+
 
 	public function deleteOrder($order_code)
 	{
@@ -439,7 +492,7 @@ class IndexController extends CI_Controller
 		$config = array();
 		$config["base_url"] = base_url() . '/pagination/danh-muc/' . '/' . $CategoryID . '/' . $this->data['slug'];
 		$config['total_rows'] = ceil($this->IndexModel->countAllProductByCate($CategoryID));
-		$config["per_page"] = 6; //từng trang 3 sản phẩn
+		$config["per_page"] = 8; //từng trang 3 sản phẩn
 		$config["uri_segment"] = 5; //lấy số trang hiện tại
 		$config['use_page_numbers'] = TRUE; //trang có số
 		$config['full_tag_open'] = '<ul class="pagination">';
@@ -502,7 +555,7 @@ class IndexController extends CI_Controller
 		$config = array();
 		$config["base_url"] = base_url() . '/pagination/thuong-hieu/' . '/' . $BrandID . '/' . $this->data['slug'];
 		$config['total_rows'] = ceil($this->IndexModel->countAllProductByBrand($BrandID)); //đếm tất cả sản phẩm //8 //hàm ceil làm tròn phân trang 
-		$config["per_page"] = 6; //từng trang 3 sản phẩn
+		$config["per_page"] = 8; //từng trang 3 sản phẩn
 		$config["uri_segment"] = 5; //lấy số trang hiện tại
 		$config['use_page_numbers'] = TRUE; //trang có số
 		$config['full_tag_open'] = '<ul class="pagination">';
@@ -564,6 +617,7 @@ class IndexController extends CI_Controller
 		$this->load->view("pages/layout/index", $this->data);
 	}
 
+
 	public function add_to_cart()
 	{
 		$ProductID = $this->input->post('ProductID');
@@ -599,6 +653,14 @@ class IndexController extends CI_Controller
 			)
 		);
 		$this->cart->insert($cart);
+
+		// Xóa mã giảm giá nếu có
+$this->session->unset_userdata('coupon_code');
+$this->session->unset_userdata('coupon_discount');
+$this->session->unset_userdata('coupon_type');
+$this->session->unset_userdata('coupon_max');
+$this->session->unset_userdata('coupon_id');
+
 		$this->session->set_flashdata('success', 'Thêm vào giỏ hàng thành công.');
 		redirect(base_url() . 'gio-hang', 'refresh');
 	}
@@ -623,18 +685,89 @@ class IndexController extends CI_Controller
 			}
 		}
 		$this->cart->update($cart);
+		// Xóa mã giảm giá nếu có
+$this->session->unset_userdata('coupon_code');
+$this->session->unset_userdata('coupon_discount');
+$this->session->unset_userdata('coupon_type');
+$this->session->unset_userdata('coupon_max');
+$this->session->unset_userdata('coupon_id');
+
 		// redirect(base_url().'gio-hang', 'refresh');
 		redirect($_SERVER['HTTP_REFERER']);
 	}
 
+	// gio hang ajax
+	public function update_cart_item_ajax()
+{
+    // Kiểm tra xem request có phải là AJAX không
+    if (!$this->input->is_ajax_request()) {
+        show_404();
+    }
+
+    $rowid = $this->input->post('rowid');
+    $quantity = (int)$this->input->post('quantity');
+
+    if (!$rowid || $quantity <= 0) {
+        echo json_encode(['success' => false, 'message' => 'Dữ liệu không hợp lệ']);
+        return;
+    }
+
+    $updated = false;
+
+    foreach ($this->cart->contents() as $items) {
+        if ($rowid == $items['rowid']) {
+            $new_qty = ($quantity <= $items['options']['in_stock']) 
+                ? $quantity 
+                : $items['options']['in_stock'];
+
+            $this->cart->update([
+                'rowid' => $rowid,
+                'qty' => $new_qty
+            ]);
+
+            // Xoá mã giảm giá vì giỏ hàng thay đổi
+            $this->session->unset_userdata('coupon_code');
+            $this->session->unset_userdata('coupon_discount');
+            $this->session->unset_userdata('coupon_type');
+            $this->session->unset_userdata('coupon_max');
+            $this->session->unset_userdata('coupon_id');
+
+            $updated = true;
+            break;
+        }
+    }
+
+    if ($updated) {
+        echo json_encode(['success' => true]);
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Không tìm thấy sản phẩm trong giỏ hàng']);
+    }
+}
+
+
+
 	public function delete_all_cart()
 	{
 		$this->cart->destroy();
+		// Xóa mã giảm giá nếu có
+$this->session->unset_userdata('coupon_code');
+$this->session->unset_userdata('coupon_discount');
+$this->session->unset_userdata('coupon_type');
+$this->session->unset_userdata('coupon_max');
+$this->session->unset_userdata('coupon_id');
+
 		redirect(base_url() . 'gio-hang', 'refresh');
 	}
 	public function delete_item($rowid)
 	{
 		$this->cart->remove($rowid);
+		// Xóa mã giảm giá nếu có
+$this->session->unset_userdata('coupon_code');
+$this->session->unset_userdata('coupon_discount');
+$this->session->unset_userdata('coupon_type');
+$this->session->unset_userdata('coupon_max');
+$this->session->unset_userdata('coupon_id');
+
 		redirect(base_url() . 'gio-hang', 'refresh');
 	}
 
@@ -1250,7 +1383,7 @@ class IndexController extends CI_Controller
 		// echo '</pre>';
 		$this->data = $user;
 		$this->data['template'] = "pages/customer/confirmPassword";
-		$this->load->view("pages/layout/index", $this->data);
+		$this->load->view("pages/layout/index2", $this->data);
 	}
 
 

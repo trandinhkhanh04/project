@@ -112,7 +112,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
                                     src="<?php echo base_url('uploads/user/' . $profile_user->Avatar) ?>"
                                     alt="Hình ảnh người dùng"><br>
                                 <input name="Avatar" type="file" class="form-control form-control-sm" id="formFileSm">
-                                <button class="btn btn-primary" type="submit">Cập nhật</button>
+                                <button class="btn btn-success" type="submit">Cập nhật</button>
                             </div>
                         </form>
 
@@ -146,7 +146,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
                                     <input name="Phone" class="form-control" id="inputPhone" type="tel"
                                         placeholder="Enter your phone number" value="<?php echo $profile_user->Phone ?>">
                                 </div>
-                                <button class="btn btn-primary" type="submit">Lưu lại thay đổi</button>
+                                <button class="btn btn-success" type="submit">Lưu lại thay đổi</button>
                         </div>
                         </form>
                     </div>

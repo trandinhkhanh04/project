@@ -3,7 +3,7 @@
 		<div class="row">
 			<?php $this->load->view('pages/component/sidebar'); ?>
 
-			<div class="col-sm-9 padding-right">
+			<div class="col">
 
 				<?php
 				if (!empty($product_details)) {
@@ -20,7 +20,7 @@
 
 
 						<form action="<?php echo base_url('add-to-cart') ?>" method="POST">
-							<div class="col-sm-7">
+							<div class="col-sm-7" style="padding-left: 0; text-align: left;">
 
 								<div class="product-information"><!--/product-information-->
 									<h2><?php echo $pro_det->Name ?></h2>
@@ -56,7 +56,7 @@
 										<br>
 										<label>Tồn kho: <?php echo $pro_det->total_remaining ?></label>
 										<input type="number" min="1" value="1" name="Quantity" />
-										<button type="submit" class="btn btn-fefault cart">
+										<button type="submit" class="btn btn-fefault cart" style="background-color: #808080;">
 											<i class="fa fa-shopping-cart"></i>
 											Thêm vào giỏ hàng
 										</button>
@@ -87,6 +87,23 @@
 
 									<p><b>Thương hiệu:</b> <?php echo $pro_det->tenthuonghieu ?> </p>
 									<p><b>Danh mục:</b> <?php echo $pro_det->tendanhmuc ?></p>
+
+									<p><b>Giới tính:</b> 
+										<?php 
+											$gender = strtolower(trim($pro_det->set));  // xử lý chuẩn hóa chữ và bỏ khoảng trắng
+											if ($gender == 'nam') {
+												echo 'Nam';
+											} elseif ($gender == 'nữ') {
+												echo 'Nữ';
+											} elseif ($gender == 'unisex') {
+												echo 'Unisex';
+											} else {
+												echo 'Không xác định';
+											}
+										?>
+									</p>
+
+
 									<!-- <p><b>Công dụng sản phẩm:</b> <?php echo $pro_det->Product_use ?></p> -->
 									<a href=""><img src="images/product-details/share.png" class="share img-responsive"
 											alt="" /></a>
@@ -96,12 +113,17 @@
 					</div><!--/product-details-->
 				<?php } ?>
 
-				<div class="category-tab shop-details-tab"><!--category-tab-->
+				<div class="category-tab shop-details-tab" style="padding-left: 0; text-align: left;"><!--category-tab-->
 					<div class="col-sm-12">
-						<ul class="nav nav-tabs">
 
-							<li class="active"><a href="#reviews" data-toggle="tab">Đánh giá</a></li>
+						<ul class="nav" style="text-align: left; padding-left: 0;">
+  							<li class="active">
+    							<a href="#reviews" data-toggle="tab" style="color: white;">Đánh giá</a>
+
+  							</li>
 						</ul>
+
+
 					</div>
 					<div class="tab-content">
 						<div class="tab-pane fade active in" id="reviews">
