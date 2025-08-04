@@ -17,6 +17,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
  * @property productModel $productModel
  * @property page $page
  * @property customerModel $customerModel
+ * @property ShipperModel $ShipperModel
  * @property loginModel $loginModel
  * @property upload $upload
  * @property db $db

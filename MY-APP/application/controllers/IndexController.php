@@ -1002,6 +1002,7 @@ class IndexController extends CI_Controller
 						'username' => $result[0]->Name,
 						'email' => $result[0]->Email,
 						'phone' => $result[0]->Phone,
+						'avatar' => $result[0]->Avatar
 					];
 
 					if ($result[0]->Role_ID == 1) {

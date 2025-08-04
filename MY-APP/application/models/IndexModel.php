@@ -756,6 +756,13 @@ class indexModel extends CI_Model
         return $query->row();
     }
 
+    public function selectAvatarAdminById($UserID)
+    {
+        $this->db->select('Avatar');
+        $query = $this->db->get_where('users', ['UserID' => $UserID]);
+        return $query->row();
+    }
+
 
     public function updateCustomer($user_id, $data)
     {
@@ -810,15 +817,16 @@ class indexModel extends CI_Model
         return true;
     }
 
-
     public function getValidCoupon($coupon_code)
     {
         $this->db->where('Coupon_code', $coupon_code);
         $this->db->where('Start_date <=', date('Y-m-d H:i:s'));
         $this->db->where('End_date >=', date('Y-m-d H:i:s'));
+        $this->db->where('Status', 1);
         $query = $this->db->get('discount');
         return $query->row();
     }
+
 
     public function coupon_applied($coupon_code)
     {

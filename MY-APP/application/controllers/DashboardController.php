@@ -21,6 +21,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
  * @property RevenueModel $RevenueModel
  * @property OrderModel $OrderModel
  * @property CustomerModel $CustomerModel
+ * @property data $data
  * 
  */
 
@@ -31,12 +32,8 @@ class dashboardController extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
         $this->checkLogin();
     }
-
 
     private function checkLogin()
     {
@@ -187,7 +184,7 @@ class dashboardController extends CI_Controller
 
 
 
-    
+
 
     public function createDiscountCode()
     {
@@ -432,5 +429,4 @@ class dashboardController extends CI_Controller
         $this->session->set_flashdata('success', 'Xoá mã giảm giá thành công');
         redirect(base_url('discount-code/list'));
     }
-
 }

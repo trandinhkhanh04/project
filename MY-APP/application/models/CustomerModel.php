@@ -123,6 +123,7 @@ class customerModel extends CI_Model
         $query = $this->db->get_where('users', ['UserID' => $UserID]);
         return $query->row();
     }
+    
     public function selectRoleById($Role_ID)
     {
         $query = $this->db->get_where('role', ['Role_ID' => $Role_ID]);

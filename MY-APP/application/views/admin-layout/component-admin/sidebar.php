@@ -94,7 +94,7 @@ $sidebar_menu = [
         'children' => [
             ['label' => 'Thêm mã giảm giá', 'url' => 'discount-code/create', 'sub' => 'create'],
             ['label' => 'Danh sách mã giảm giá', 'url' => 'discount-code/list', 'sub' => 'list'],
-       
+
         ]
     ],
     'shipper' => [
@@ -104,8 +104,8 @@ $sidebar_menu = [
             ['label' => 'Danh sách shipper', 'url' => 'shipperAdmin/index', 'sub' => 'index'],
 
             // ['label' => 'Thêm shipper', 'url' => 'shipperAdmin/create', 'sub' => 'create'],
-    ]
-],
+        ]
+    ],
 
 ];
 
@@ -118,19 +118,24 @@ $sidebar_menu = [
     <div class="sidebar-collapse">
         <ul class="nav metismenu" id="side-menu">
             <li class="nav-header">
+                <?php
+                $user = $this->session->userdata('logged_in_admin');
+                if (!$user) {
+                    $user = $this->session->userdata('logged_in_customer');
+                }  
+                $avatar = !empty($user['avatar']) ? base_url('uploads/user/' . $user['avatar']) : base_url('uploads/user/user.png');
+                $username = !empty($user['username']) ? $user['username'] : 'Người dùng';
+                ?>
                 <div class="dropdown profile-element">
                     <span>
-                        <img width="50" height="50" class="img-circle"
-                            src="<?php echo base_url('frontend/image/user9.png') ?>" />
+                        <img width="50" height="50" class="img-circle" src="<?php echo $avatar; ?>" />
                     </span>
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                         <span class="clear">
-                            <span class="block m-t-xs"><strong class="font-bold">Định Khánh</strong></span>
-                            <!-- <span class="text-muted text-xs block">Thao tác<b class="caret"></b></span> -->
+                            <span class="block m-t-xs"><strong class="font-bold"><?php echo $username; ?></strong></span>
                         </span>
                     </a>
                     <ul class="dropdown-menu animated fadeInRight m-t-xs">
-                
                         <li class="divider"></li>
                         <li><a href="<?php echo base_url('logout_admin'); ?>">Logout</a></li>
                     </ul>
@@ -210,12 +215,12 @@ $sidebar_menu = [
 
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                         <span class="clear">
-                            <span class="block m-t-xs"><strong class="font-bold"><?php echo $user->Name?></strong></span>
+                            <span class="block m-t-xs"><strong class="font-bold"><?php echo $user->Name ?></strong></span>
                             <span class="text-muted text-xs block">Thao tác<b class="caret"></b></span>
                         </span>
                     </a>
                     <ul class="dropdown-menu animated fadeInRight m-t-xs">
-                        <li><a href="<?php echo base_url('profile-user')?>">Thông tin cá nhân</a></li>
+                        <li><a href="<?php echo base_url('profile-user') ?>">Thông tin cá nhân</a></li>
             
                         <li><a href="<?php echo base_url('logout_admin'); ?>">Đăng xuất</a></li>
                     </ul>

@@ -1,11 +1,12 @@
 <?php
 class loginModel extends CI_Model
 {
-    public function checkLoginAdmin($email) {
+    public function checkLoginAdmin($email)
+    {
         $query = $this->db->where('email', $email)->where('status', 1)->where('role_id', 1)->get('users');
         return $query->result();
     }
-    
+
     public function checkLoginCustomer($email)
     {
         $this->db->select('*');
@@ -18,25 +19,19 @@ class loginModel extends CI_Model
             return [];
         }
     }
-    public function checkEmailExists($email) {
+    public function checkEmailExists($email)
+    {
         $this->db->where('email', $email);
         $query = $this->db->get('users');
         return $query->num_rows() > 0;
     }
-    
+
     public function newCustomer($data)
     {
         return $this->db->insert('users', $data);
-
     }
     public function newUserAdmin($data)
     {
         return $this->db->insert('users', $data);
-
     }
-
-
-
 }
-
-?>
