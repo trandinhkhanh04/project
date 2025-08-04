@@ -28,8 +28,6 @@ defined('BASEPATH') or exit('No direct script access allowed');
  */
 
 
-
-
 class IndexController extends CI_Controller
 {
 
@@ -84,13 +82,13 @@ class IndexController extends CI_Controller
 
 
 
-	
+
 
 	public function index()
 	{
 
 
-		
+
 		$this->load->helper('pagination');
 		$this->load->library('pagination');
 		$this->load->model('IndexModel');
@@ -121,37 +119,37 @@ class IndexController extends CI_Controller
 
 
 	public function gender($set = null, $page = 1)
-{
-    $this->load->helper('pagination');
-    $this->load->library('pagination');
-    $this->load->model('IndexModel');
+	{
+		$this->load->helper('pagination');
+		$this->load->library('pagination');
+		$this->load->model('IndexModel');
 
-    // 1) Tính tổng sản phẩm theo giới tính
-    $total = $this->IndexModel->countByGender($set);
+		// 1) Tính tổng sản phẩm theo giới tính
+		$total = $this->IndexModel->countByGender($set);
 
-    // 2) Thiết lập phân trang
-    $per_page     = 8;
-    $uri_segment  = 3;        // nếu URL là /gioi-tinh/nam/2 thì segment 3 = page
-    $base_url     = base_url("gioi-tinh/{$set}");
+		// 2) Thiết lập phân trang
+		$per_page     = 8;
+		$uri_segment  = 3;        // nếu URL là /gioi-tinh/nam/2 thì segment 3 = page
+		$base_url     = base_url("gioi-tinh/{$set}");
 
-    $this->data['links'] = init_pagination($base_url, $total, $per_page, $uri_segment);
+		$this->data['links'] = init_pagination($base_url, $total, $per_page, $uri_segment);
 
-    // 3) Tính offset và lấy dữ liệu
-    $page  = max(1, (int)$page);
-    $start = ($page - 1) * $per_page;
-    $this->data['allproduct_pagination'] = $this->IndexModel->getByGenderPagination($set, $per_page, $start);
+		// 3) Tính offset và lấy dữ liệu
+		$page  = max(1, (int)$page);
+		$start = ($page - 1) * $per_page;
+		$this->data['allproduct_pagination'] = $this->IndexModel->getByGenderPagination($set, $per_page, $start);
 
-    // 4) Các dữ liệu phụ (bestsellers, sliders…)
-	// Truyền $Name ra view
-    $this->data['Name'] = ucfirst($set); // viết hoa chữ cái đầu, ví dụ "Nam"
-    $this->data['sliders']     = $this->SliderModel->selectAllSlider();
+		// 4) Các dữ liệu phụ (bestsellers, sliders…)
+		// Truyền $Name ra view
+		$this->data['Name'] = ucfirst($set); // viết hoa chữ cái đầu, ví dụ "Nam"
+		$this->data['sliders']     = $this->SliderModel->selectAllSlider();
 
-    // 5) View & layout
-    $this->data['template'] = "pages/product/product";   // sử dụng chung template home
-    $this->data['page_title'] = 'Giới tính: ' . ucfirst($set);
+		// 5) View & layout
+		$this->data['template'] = "pages/product/product";   // sử dụng chung template home
+		$this->data['page_title'] = 'Giới tính: ' . ucfirst($set);
 
-    $this->load->view("pages/layout/index", $this->data);
-}
+		$this->load->view("pages/layout/index", $this->data);
+	}
 
 
 	public function search_product()
@@ -284,12 +282,15 @@ class IndexController extends CI_Controller
 			$discount = $coupon->Discount_value;
 		}
 
+		$this->IndexModel->coupon_applied($coupon_code);
 
 		$this->session->set_userdata('coupon_code', $coupon->Coupon_code);
 		$this->session->set_userdata('coupon_discount', $discount);
 		$this->session->set_userdata('coupon_id', $coupon->DiscountID);
 
 		$this->session->set_flashdata('success', 'Áp dụng mã giảm giá thành công');
+
+
 
 		redirect($_SERVER['HTTP_REFERER']);
 	}
@@ -441,32 +442,32 @@ class IndexController extends CI_Controller
 
 
 	public function viewOrder($order_code)
-{
-    $this->load->model('orderModel');
-    $this->load->model('productModel');
+	{
+		$this->load->model('orderModel');
+		$this->load->model('productModel');
 
-    // Lấy chi tiết đơn hàng
-    $order_details = $this->orderModel->selectOrderDetails($order_code);
-    foreach ($order_details as $order_detail) {
-        $product_details = $this->productModel->selectProductById($order_detail->ProductID);
-        $order_detail->product_details = $product_details;
-    }
+		// Lấy chi tiết đơn hàng
+		$order_details = $this->orderModel->selectOrderDetails($order_code);
+		foreach ($order_details as $order_detail) {
+			$product_details = $this->productModel->selectProductById($order_detail->ProductID);
+			$order_detail->product_details = $product_details;
+		}
 
-    // Gán vào data
-    $this->data['order_details'] = $order_details;
+		// Gán vào data
+		$this->data['order_details'] = $order_details;
 
-    // Lấy thông tin đơn hàng chính (để biết shipper nào được gán)
-    $order = $this->orderModel->getOrderByCode($order_code);
-    $this->data['order'] = $order;
+		// Lấy thông tin đơn hàng chính (để biết shipper nào được gán)
+		$order = $this->orderModel->getOrderByCode($order_code);
+		$this->data['order'] = $order;
 
-    // Lấy thông tin shipper nếu có
-    $shipperID = $order->ShipperID ?? null;
-    $this->data['shipper'] = $shipperID ? $this->orderModel->getShipperById($shipperID) : null;
+		// Lấy thông tin shipper nếu có
+		$shipperID = $order->ShipperID ?? null;
+		$this->data['shipper'] = $shipperID ? $this->orderModel->getShipperById($shipperID) : null;
 
-    // Load view
-    $this->data['template'] = 'pages/order/viewOrder';
-    $this->load->view("pages/layout/index", $this->data);
-}
+		// Load view
+		$this->data['template'] = 'pages/order/viewOrder';
+		$this->load->view("pages/layout/index", $this->data);
+	}
 
 
 	public function deleteOrder($order_code)
@@ -655,11 +656,11 @@ class IndexController extends CI_Controller
 		$this->cart->insert($cart);
 
 		// Xóa mã giảm giá nếu có
-$this->session->unset_userdata('coupon_code');
-$this->session->unset_userdata('coupon_discount');
-$this->session->unset_userdata('coupon_type');
-$this->session->unset_userdata('coupon_max');
-$this->session->unset_userdata('coupon_id');
+		$this->session->unset_userdata('coupon_code');
+		$this->session->unset_userdata('coupon_discount');
+		$this->session->unset_userdata('coupon_type');
+		$this->session->unset_userdata('coupon_max');
+		$this->session->unset_userdata('coupon_id');
 
 		$this->session->set_flashdata('success', 'Thêm vào giỏ hàng thành công.');
 		redirect(base_url() . 'gio-hang', 'refresh');
@@ -686,11 +687,11 @@ $this->session->unset_userdata('coupon_id');
 		}
 		$this->cart->update($cart);
 		// Xóa mã giảm giá nếu có
-$this->session->unset_userdata('coupon_code');
-$this->session->unset_userdata('coupon_discount');
-$this->session->unset_userdata('coupon_type');
-$this->session->unset_userdata('coupon_max');
-$this->session->unset_userdata('coupon_id');
+		$this->session->unset_userdata('coupon_code');
+		$this->session->unset_userdata('coupon_discount');
+		$this->session->unset_userdata('coupon_type');
+		$this->session->unset_userdata('coupon_max');
+		$this->session->unset_userdata('coupon_id');
 
 		// redirect(base_url().'gio-hang', 'refresh');
 		redirect($_SERVER['HTTP_REFERER']);
@@ -698,51 +699,51 @@ $this->session->unset_userdata('coupon_id');
 
 	// gio hang ajax
 	public function update_cart_item_ajax()
-{
-    // Kiểm tra xem request có phải là AJAX không
-    if (!$this->input->is_ajax_request()) {
-        show_404();
-    }
+	{
+		// Kiểm tra xem request có phải là AJAX không
+		if (!$this->input->is_ajax_request()) {
+			show_404();
+		}
 
-    $rowid = $this->input->post('rowid');
-    $quantity = (int)$this->input->post('quantity');
+		$rowid = $this->input->post('rowid');
+		$quantity = (int)$this->input->post('quantity');
 
-    if (!$rowid || $quantity <= 0) {
-        echo json_encode(['success' => false, 'message' => 'Dữ liệu không hợp lệ']);
-        return;
-    }
+		if (!$rowid || $quantity <= 0) {
+			echo json_encode(['success' => false, 'message' => 'Dữ liệu không hợp lệ']);
+			return;
+		}
 
-    $updated = false;
+		$updated = false;
 
-    foreach ($this->cart->contents() as $items) {
-        if ($rowid == $items['rowid']) {
-            $new_qty = ($quantity <= $items['options']['in_stock']) 
-                ? $quantity 
-                : $items['options']['in_stock'];
+		foreach ($this->cart->contents() as $items) {
+			if ($rowid == $items['rowid']) {
+				$new_qty = ($quantity <= $items['options']['in_stock'])
+					? $quantity
+					: $items['options']['in_stock'];
 
-            $this->cart->update([
-                'rowid' => $rowid,
-                'qty' => $new_qty
-            ]);
+				$this->cart->update([
+					'rowid' => $rowid,
+					'qty' => $new_qty
+				]);
 
-            // Xoá mã giảm giá vì giỏ hàng thay đổi
-            $this->session->unset_userdata('coupon_code');
-            $this->session->unset_userdata('coupon_discount');
-            $this->session->unset_userdata('coupon_type');
-            $this->session->unset_userdata('coupon_max');
-            $this->session->unset_userdata('coupon_id');
+				// Xoá mã giảm giá vì giỏ hàng thay đổi
+				$this->session->unset_userdata('coupon_code');
+				$this->session->unset_userdata('coupon_discount');
+				$this->session->unset_userdata('coupon_type');
+				$this->session->unset_userdata('coupon_max');
+				$this->session->unset_userdata('coupon_id');
 
-            $updated = true;
-            break;
-        }
-    }
+				$updated = true;
+				break;
+			}
+		}
 
-    if ($updated) {
-        echo json_encode(['success' => true]);
-    } else {
-        echo json_encode(['success' => false, 'message' => 'Không tìm thấy sản phẩm trong giỏ hàng']);
-    }
-}
+		if ($updated) {
+			echo json_encode(['success' => true]);
+		} else {
+			echo json_encode(['success' => false, 'message' => 'Không tìm thấy sản phẩm trong giỏ hàng']);
+		}
+	}
 
 
 
@@ -750,11 +751,11 @@ $this->session->unset_userdata('coupon_id');
 	{
 		$this->cart->destroy();
 		// Xóa mã giảm giá nếu có
-$this->session->unset_userdata('coupon_code');
-$this->session->unset_userdata('coupon_discount');
-$this->session->unset_userdata('coupon_type');
-$this->session->unset_userdata('coupon_max');
-$this->session->unset_userdata('coupon_id');
+		$this->session->unset_userdata('coupon_code');
+		$this->session->unset_userdata('coupon_discount');
+		$this->session->unset_userdata('coupon_type');
+		$this->session->unset_userdata('coupon_max');
+		$this->session->unset_userdata('coupon_id');
 
 		redirect(base_url() . 'gio-hang', 'refresh');
 	}
@@ -762,11 +763,11 @@ $this->session->unset_userdata('coupon_id');
 	{
 		$this->cart->remove($rowid);
 		// Xóa mã giảm giá nếu có
-$this->session->unset_userdata('coupon_code');
-$this->session->unset_userdata('coupon_discount');
-$this->session->unset_userdata('coupon_type');
-$this->session->unset_userdata('coupon_max');
-$this->session->unset_userdata('coupon_id');
+		$this->session->unset_userdata('coupon_code');
+		$this->session->unset_userdata('coupon_discount');
+		$this->session->unset_userdata('coupon_type');
+		$this->session->unset_userdata('coupon_max');
+		$this->session->unset_userdata('coupon_id');
 
 		redirect(base_url() . 'gio-hang', 'refresh');
 	}
@@ -1432,7 +1433,7 @@ $this->session->unset_userdata('coupon_id');
 
 			$this->load->model('loginModel');
 			$result = $this->loginModel->checkLoginCustomer($email);
-		
+
 			// Kiểm tra kết quả từ cơ sở dữ liệu và xác minh mật khẩu
 			if (!empty($result) && password_verify($password, $result[0]->Password)) {
 				$this->session->unset_userdata(['login_attempts', 'last_attempt_time']);

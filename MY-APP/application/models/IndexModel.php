@@ -43,22 +43,22 @@ class indexModel extends CI_Model
         return $query->result();
     }
 
-        // Đếm tổng sản phẩm theo giới tính
+    // Đếm tổng sản phẩm theo giới tính
     public function countByGender($set)
     {
         return $this->db
-                    ->where('LOWER(`set`)', strtolower($set))
-                    ->count_all_results('product');
+            ->where('LOWER(`set`)', strtolower($set))
+            ->count_all_results('product');
     }
 
     // Lấy phân trang sản phẩm theo giới tính
     public function getByGenderPagination($set, $limit, $offset)
     {
         return $this->db
-                    ->where('LOWER(`set`)', strtolower($set))
-                    ->limit($limit, $offset)
-                    ->get('product')
-                    ->result();
+            ->where('LOWER(`set`)', strtolower($set))
+            ->limit($limit, $offset)
+            ->get('product')
+            ->result();
     }
 
 
@@ -147,7 +147,7 @@ class indexModel extends CI_Model
     }
 
 
-   
+
 
 
     public function getProductPagination($limit, $start, $keyword = null, $status = null, $sort_stock = null)
@@ -237,7 +237,7 @@ class indexModel extends CI_Model
             ->join('brand', 'brand.BrandID = product.BrandID')
             ->where('product.Status', 1)
             ->where('orders.Order_Status', 4)
-            ->where('orders.Payment_Status', 1) 
+            ->where('orders.Payment_Status', 1)
             ->group_by('product.ProductID')
             ->order_by('sold_quantity', 'DESC')
             ->limit($limit);
@@ -811,8 +811,6 @@ class indexModel extends CI_Model
     }
 
 
-
-
     public function getValidCoupon($coupon_code)
     {
         $this->db->where('Coupon_code', $coupon_code);
@@ -820,5 +818,13 @@ class indexModel extends CI_Model
         $this->db->where('End_date >=', date('Y-m-d H:i:s'));
         $query = $this->db->get('discount');
         return $query->row();
+    }
+
+    public function coupon_applied($coupon_code)
+    {
+        $this->db->where('Coupon_code', $coupon_code);
+        $this->db->update('discount', ['Status' => 0]);
+
+        return $this->db->affected_rows() > 0;
     }
 }
